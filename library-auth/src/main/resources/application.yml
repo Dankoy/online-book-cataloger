@@ -1,0 +1,157 @@
+spring:
+  application:
+    name: library-auth
+
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ${MONGODB_DATABASE} # library
+      port: ${MONGODB_PORT} # 27017
+      host: ${MONGODB_HOST} # docker container name
+      # обязательно при шифровании пароля необходимо явно указать алгоритм и прочие параметры,
+      # что бы не напороться на несоответствие
+#      password: ENC(ukzZHI9tZCXVJ0wTuHD+QykLgZwdO+Ma) # mongopass
+      username: admin
+  jmx:
+    enabled: true
+
+server:
+  port: 8081
+
+info:
+  name: ${spring.application.name}
+  description: library backend with resilience4j
+  environment: ${spring.profiles.active}
+  version: 0.0.1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8761/eureka"
+    register-with-eureka: true
+    fetch-registry: true
+    eureka-service-url-poll-interval-seconds: 5000
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+zuul:
+  prefix: "/library"
+  strip-prefix: true
+  routes:
+    library-backend:
+      path: /lb/**
+      service-id: library-backend
+#      strip-prefix: false
+
+library-backend:
+  ribbon:
+    eureka:
+      enabled: true
+    ReadTimeout: 60000
+    ServerListRefreshInterval: 1000
+
+#library-backend:
+#  ribbon:
+#    ReadTimeout: 60000
+#    eureka:
+#      enabled: true
+
+#ribbon:
+#  ReadTimeout: 100
+#  ConnectTimeout: 500
+#  MaxAutoRetries: 1
+#  MaxAutoRetriesNextServer: 1
+
+
+hystrix:
+  command:
+    getRentsKey:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+jasypt:
+  encryptor:
+    password: masterpassword
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.dankoy.libraryauth.core.mongock.changelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    routes:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
+    circuitbreakers:
+      enabled: true
+
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        data:
+          mongodb: DEBUG
+
+#resilience4j:
+#  circuitbreaker:
+#    metrics:
+#      enabled: true
+#    configs:
+#      default:
+#        registerHealthIndicator: true
+#        slidingWindowSize: 10
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowType: TIME_BASED
+#        minimumNumberOfCalls: 20
+#        waitDurationInOpenState: 10s
+#        failureRateThreshold: 50
+#        eventConsumerBufferSize: 10
+#    instances:
+#      commentaryService:
+#        baseConfig: default
+#        waitDurationInOpenState: 2s
+#        slidingWindowSize: 1
+#        permittedNumberOfCallsInHalfOpenState: 1
+#
+#  timelimiter:
+#    metrics:
+#      enabled: true
+#    configs:
+#      default:
+#        timeout-duration: 3s
+#    instances:
+#      commentaryService:
+#        baseConfig: default
+#
+#  retry:
+#    instances:
+#      commentaryService:
+#        maxAttempts: 3
+#        waitDuration: 2s
+#        enableExponentialBackoff: true # увеличит время ожидания между ретраями
+#        exponentialBackoffMultiplier: 2
+#

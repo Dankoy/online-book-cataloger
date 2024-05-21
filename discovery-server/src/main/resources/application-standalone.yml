@@ -1,0 +1,35 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: "http://localhost:${server.port}/eureka"
+    healthcheck:
+      enabled: true
+    webclient:
+      enabled: true
+
+  server:
+    wait-time-in-ms-when-sync-empty: 5
+    registry-sync-retries: 3
+    max-threads-for-peer-replication: 5
+
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+
+#    healthCheckUrlPath: ${server.servletPath}/health
+#    status-page-url-path: /eureka-info
+
+logging:
+  level:
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO
+
+
