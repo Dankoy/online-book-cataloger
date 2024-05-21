@@ -15,7 +15,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.2</version>
+    <version>3.2.5</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -30,12 +30,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
+    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
     <minimal.maven.version>3.3.9</minimal.maven.version>
-<!--    <spring.version>2.7.6</spring.version>-->
+<!--    <spring.version>3.2.2</spring.version>-->
     <mongock.version>4.3.8</mongock.version>
     <resilience4j.version>2.0.2</resilience4j.version>
-    <spring-cloud.version>2021.0.7</spring-cloud.version>
+    <spring-cloud.version>2023.0.1</spring-cloud.version>
   </properties>
 
   <dependencies>
@@ -44,36 +44,30 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
       <exclusions> <!-- конфликты внутри самой либы-->
-<!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
-<!--          <groupId>com.netflix.servo</groupId>-->
-<!--          <artifactId>servo-core</artifactId>-->
-<!--        </exclusion>-->
-        <exclusion>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
+        <exclusion>  <!-- declare the exclusion here -->
+          <groupId>com.netflix.servo</groupId>
+          <artifactId>servo-core</artifactId>
         </exclusion>
+<!--        <exclusion>-->
+<!--          <groupId>com.google.guava</groupId>-->
+<!--          <artifactId>guava</artifactId>-->
+<!--        </exclusion>-->
       </exclusions>
     </dependency>
 
 <!--    взамен той что убрал эксклюдом-->
     <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>31.1-jre</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.google.guava</groupId>-->
+<!--      <artifactId>guava</artifactId>-->
+<!--      <version>31.1-jre</version>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-      <scope>runtime</scope>
-      <optional>true</optional>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
@@ -104,11 +98,12 @@
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>de.flapdoodle.embed</groupId>
-      <artifactId>de.flapdoodle.embed.mongo</artifactId>
-      <scope>test</scope>
-    </dependency>
+<!--    Use testcontainers -->
+<!--    <dependency>-->
+<!--      <groupId>de.flapdoodle.embed</groupId>-->
+<!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>com.github.cloudyrock.mongock</groupId>
@@ -151,7 +146,7 @@
     <dependency>
       <groupId>com.github.ulisesbocchio</groupId>
       <artifactId>jasypt-spring-boot-starter</artifactId>
-      <version>3.0.4</version>
+      <version>3.0.5</version>
     </dependency>
 
     <!-- Spring Security -->
@@ -203,37 +198,37 @@
     </dependencies>
   </dependencyManagement>
 
-  <profiles>
-    <profile>
-      <id>backend</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>1.12.1</version>
-            <executions>
-              <execution>
-                <id>install node and npm
-                </id> <!-- here there must be the same identifier as defined in <build><plugins> section -->
-                <phase>none</phase> <!-- this disables plugin -->
-              </execution>
-              <execution>
-                <id>npm install
-                </id> <!-- here there must be the same identifier as defined in <build><plugins> section -->
-                <phase>none</phase> <!-- this disables plugin -->
-              </execution>
-              <execution>
-                <id>npm run build
-                </id> <!-- here there must be the same identifier as defined in <build><plugins> section -->
-                <phase>none</phase> <!-- this disables plugin -->
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+<!--  <profiles>-->
+<!--    <profile>-->
+<!--      <id>backend</id>-->
+<!--      <build>-->
+<!--        <plugins>-->
+<!--          <plugin>-->
+<!--            <groupId>com.github.eirslett</groupId>-->
+<!--            <artifactId>frontend-maven-plugin</artifactId>-->
+<!--            <version>1.12.1</version>-->
+<!--            <executions>-->
+<!--              <execution>-->
+<!--                <id>install node and npm-->
+<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+<!--              </execution>-->
+<!--              <execution>-->
+<!--                <id>npm install-->
+<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+<!--              </execution>-->
+<!--              <execution>-->
+<!--                <id>npm run build-->
+<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+<!--              </execution>-->
+<!--            </executions>-->
+<!--          </plugin>-->
+<!--        </plugins>-->
+<!--      </build>-->
+<!--    </profile>-->
+<!--  </profiles>-->
 
 
   <build>
@@ -258,6 +253,7 @@
             </configuration>
           </execution>
         </executions>
+
       </plugin>
 
       <plugin>
@@ -285,5 +281,12 @@
 
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>maven_central</id>
+      <name>Maven Central</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </repository>
+  </repositories>
 
 </project>
