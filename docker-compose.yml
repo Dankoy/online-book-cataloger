@@ -44,7 +44,7 @@ services:
 
   db:
     env_file: .env
-    image: 'mongo:latest'
+    image: 'mongo:8.0.0-rc4-jammy'
     container_name: db
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
