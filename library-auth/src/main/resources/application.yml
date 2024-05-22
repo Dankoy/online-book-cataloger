@@ -5,12 +5,12 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      database: ${MONGODB_DATABASE} # library
-      port: ${MONGODB_PORT} # 27017
-      host: ${MONGODB_HOST} # docker container name
+      database: ${MONGODB_DATABASE:admin} # library
+      port: ${MONGODB_PORT:27017} # 27017
+      host: ${MONGODB_HOST:localhost} # docker container name
       # обязательно при шифровании пароля необходимо явно указать алгоритм и прочие параметры,
       # что бы не напороться на несоответствие
-#      password: ENC(ukzZHI9tZCXVJ0wTuHD+QykLgZwdO+Ma) # mongopass
+      password: ENC(ukzZHI9tZCXVJ0wTuHD+QykLgZwdO+Ma) # mongopass
       username: admin
   jmx:
     enabled: true
@@ -36,43 +36,6 @@ eureka:
     lease-expiration-duration-in-seconds: 90
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
-
-zuul:
-  prefix: "/library"
-  strip-prefix: true
-  routes:
-    library-backend:
-      path: /lb/**
-      service-id: library-backend
-#      strip-prefix: false
-
-library-backend:
-  ribbon:
-    eureka:
-      enabled: true
-    ReadTimeout: 60000
-    ServerListRefreshInterval: 1000
-
-#library-backend:
-#  ribbon:
-#    ReadTimeout: 60000
-#    eureka:
-#      enabled: true
-
-#ribbon:
-#  ReadTimeout: 100
-#  ConnectTimeout: 500
-#  MaxAutoRetries: 1
-#  MaxAutoRetriesNextServer: 1
-
-
-hystrix:
-  command:
-    getRentsKey:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 3000
 
 jasypt:
   encryptor:
@@ -106,15 +69,23 @@ management:
       enabled: true
     circuitbreakers:
       enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
 
+  # For Exemplars to work we need histogram buckets
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 logging:
   level:
-    root: info
-    org:
-      springframework:
-        data:
-          mongodb: DEBUG
+    root: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
 #resilience4j:
 #  circuitbreaker:

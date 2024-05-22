@@ -27,10 +27,10 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
       <exclusions> <!-- конфликты внутри самой либы-->
-        <exclusion>  <!-- declare the exclusion here -->
-          <groupId>com.netflix.servo</groupId>
-          <artifactId>servo-core</artifactId>
-        </exclusion>
+<!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
+<!--          <groupId>com.netflix.servo</groupId>-->
+<!--          <artifactId>servo-core</artifactId>-->
+<!--        </exclusion>-->
         <exclusion>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
@@ -40,11 +40,11 @@
 
 <!--    взамен той что убрал эксклюдом-->
     <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-<!--    <dependency>-->
-<!--      <groupId>com.google.guava</groupId>-->
-<!--      <artifactId>guava</artifactId>-->
-<!--      <version>31.1-jre</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.2.0-jre</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>

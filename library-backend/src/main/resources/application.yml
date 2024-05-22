@@ -55,15 +55,23 @@ management:
       enabled: true
     circuitbreakers:
       enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
 
+  # For Exemplars to work we need histogram buckets
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 logging:
   level:
-    root: info
-    org:
-      springframework:
-        data:
-          mongodb: DEBUG
+    root: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
 #resilience4j:
 #  circuitbreaker:
@@ -116,11 +124,3 @@ eureka:
     lease-expiration-duration-in-seconds: 90
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
-
-hystrix:
-  command:
-    getRentsKey:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 3000
