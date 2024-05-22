@@ -2,7 +2,40 @@ spring:
   application:
     name: library-discovery-server
 
+server:
+  port: 8761
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: "http://localhost:${server.port}/eureka"
+    healthcheck:
+      enabled: true
+    webclient:
+      enabled: true
+
+  server:
+    expected-client-renewal-interval-seconds: 30
+    eviction-interval-timer-in-ms: 60000
+    renewal-percent-threshold: 0.85
+    renewal-threshold-update-interval-ms: 90000
+    registry-sync-retries: 3
+    max-threads-for-peer-replication: 5
+    wait-time-in-ms-when-sync-empty: 5
+    enable-self-preservation: true
+
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
 management:
+  info:
+    env:
+      enabled: true
   endpoints:
     web:
       exposure:
@@ -15,3 +48,17 @@ management:
       enabled: true
     diskspace:
       enabled: true
+
+  # For Exemplars to work we need histogram buckets
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
