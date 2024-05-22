@@ -4,20 +4,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-<!--  <parent>-->
-<!--    <groupId>ru.dankoy</groupId>-->
-<!--    <artifactId>hw-19</artifactId>-->
-<!--    <version>0.0.1-SNAPSHOT</version>-->
-<!--    <relativePath/>-->
-<!--  </parent>-->
 
   <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.5</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <groupId>ru.dankoy</groupId>
+    <artifactId>online-books-cataloger</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
-
 
   <artifactId>library-auth</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -25,16 +17,8 @@
   <description>library-auth</description>
 
   <properties>
-    <java.version>21</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
-    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-    <minimal.maven.version>3.3.9</minimal.maven.version>
-<!--    <spring.version>3.2.2</spring.version>-->
     <mongock.version>4.3.8</mongock.version>
     <resilience4j.version>2.0.2</resilience4j.version>
-    <spring-cloud.version>2023.0.1</spring-cloud.version>
   </properties>
 
   <dependencies>
@@ -47,10 +31,10 @@
           <groupId>com.netflix.servo</groupId>
           <artifactId>servo-core</artifactId>
         </exclusion>
-<!--        <exclusion>-->
-<!--          <groupId>com.google.guava</groupId>-->
-<!--          <artifactId>guava</artifactId>-->
-<!--        </exclusion>-->
+                <exclusion>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                </exclusion>
       </exclusions>
     </dependency>
 
@@ -91,22 +75,22 @@
 
 
     <!--Use test containers -->
-<!--    <dependency>-->
-<!--      <groupId>de.flapdoodle.embed</groupId>-->
-<!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>de.flapdoodle.embed</groupId>-->
+    <!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>com.github.cloudyrock.mongock</groupId>
       <artifactId>mongock-spring-v5</artifactId>
       <version>${mongock.version}</version>
-<!--      <exclusions>-->
-<!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
-<!--          <groupId>com.google.guava</groupId>-->
-<!--          <artifactId>guava</artifactId>-->
-<!--        </exclusion>-->
-<!--      </exclusions>-->
+            <exclusions>
+              <exclusion>  <!-- declare the exclusion here -->
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+              </exclusion>
+            </exclusions>
     </dependency>
 
     <dependency>
@@ -156,18 +140,18 @@
     <!-- resilence dependencies   -->
     <!-- не работает. конфликт с spring cloud -->
     <!-- https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-bom -->
-<!--    <dependency>-->
-<!--      <groupId>io.github.resilience4j</groupId>-->
-<!--      <artifactId>resilience4j-bom</artifactId>-->
-<!--      <version>${resilience4j.version}</version>-->
-<!--      <type>pom</type>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>io.github.resilience4j</groupId>-->
+    <!--      <artifactId>resilience4j-bom</artifactId>-->
+    <!--      <version>${resilience4j.version}</version>-->
+    <!--      <type>pom</type>-->
+    <!--    </dependency>-->
 
-<!--    <dependency>-->
-<!--      <groupId>io.github.resilience4j</groupId>-->
-<!--      <artifactId>resilience4j-spring-boot2</artifactId>-->
-<!--      <version>${resilience4j.version}</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>io.github.resilience4j</groupId>-->
+    <!--      <artifactId>resilience4j-spring-boot2</artifactId>-->
+    <!--      <version>${resilience4j.version}</version>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -183,10 +167,12 @@
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-tracing-bridge-brave</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.wavefront</groupId>
       <artifactId>wavefront-spring-boot-starter</artifactId>
@@ -197,11 +183,19 @@
       <artifactId>spring-restdocs-mockmvc</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-tracing-reporter-wavefront</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.wavefront</groupId>
+          <artifactId>wavefront-sdk-java</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
@@ -217,89 +211,14 @@
 
   </dependencies>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-<!--  <profiles>-->
-<!--    <profile>-->
-<!--      <id>backend</id>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>com.github.eirslett</groupId>-->
-<!--            <artifactId>frontend-maven-plugin</artifactId>-->
-<!--            <version>1.12.1</version>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>install node and npm-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--              <execution>-->
-<!--                <id>npm install-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--              <execution>-->
-<!--                <id>npm run build-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--  </profiles>-->
-
-
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>${maven-enforcer-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <dependencyConvergence/>
-                <requireMavenVersion>
-                  <version>${minimal.maven.version}</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <executable>true</executable>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
 
@@ -311,12 +230,5 @@
 
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <id>maven_central</id>
-      <name>Maven Central</name>
-      <url>https://repo.maven.apache.org/maven2/</url>
-    </repository>
-  </repositories>
 
 </project>
