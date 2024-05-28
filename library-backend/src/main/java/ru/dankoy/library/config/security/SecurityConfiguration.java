@@ -3,13 +3,16 @@ package ru.dankoy.library.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 
 @Configuration
@@ -17,125 +20,157 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    // hasAnyAuthority - позволяет работать с ролями без префикса ROLE_
-    // hasAnyRole - в бд обязательно должны быть роли с префиксом ROLE_
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-//    http
-//        .csrf().disable()
-//        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//        .and()
-//        .authorizeHttpRequests(authorize ->
-//                authorize
-//                    .antMatchers("/**")
-//                    .permitAll()
-//
-//                    // work
-//                    .antMatchers(HttpMethod.GET, "/api/v1/work", "/api/v1/work/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.POST, "/api/v1/work")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/work/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/work/*")
-//                    .hasAnyRole(Authority.ADMIN.name())
-//
-//                    // editions
-//                    .antMatchers(HttpMethod.POST, "/api/v1/work/*/edition")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.GET, "/api/v1/work/*/edition")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/edition/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/edition/*")
-//                    .hasAnyRole(Authority.ADMIN.name())
-//
-//                    // commentary
-//                    .antMatchers(HttpMethod.GET, "/api/v1/work/*/commentary")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.POST, "/api/v1/work/*/commentary")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/commentary/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/commentary/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    // genre
-//                    .antMatchers(HttpMethod.GET, "/api/v1/genre")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/genre?oldGenre=*")
-//                    .hasAnyRole(Authority.ADMIN.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/genre")
-//                    .hasAnyRole(Authority.ADMIN.name())
-//
-//                    // note
-//                    .antMatchers(HttpMethod.GET, "/api/v1/note", "/api/v1/note/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.POST, "/api/v1/note")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/note/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/note/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    // publisher
-//                    .antMatchers(HttpMethod.GET, "/api/v1/publisher", "/api/v1/publisher/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.POST, "/api/v1/publisher")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/publisher/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/publisher/*")
-//                    .hasAnyRole(Authority.ADMIN.name())
-//
-//                    // shelf
-//                    .antMatchers(HttpMethod.GET, "/api/v1/shelf", "/api/v1/shelf/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
-//                        Authority.READER.name()) // для любой роли доступен.
-//
-//                    .antMatchers(HttpMethod.POST, "/api/v1/shelf")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.PUT, "/api/v1/shelf/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    .antMatchers(HttpMethod.DELETE, "/api/v1/shelf/*")
-//                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
-//
-//                    // register
-//                    .antMatchers("/api/v1/register").permitAll()
-//                    .anyRequest().authenticated()
-//            // обязательно любой запрос должен быть аутентифицирован
-//
+    http.authorizeHttpRequests(a
+            -> a.requestMatchers("/", "/error", "/webjars/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated())
+        .exceptionHandling(e
+            -> e.authenticationEntryPoint(
+            new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+        .logout(l -> l.logoutSuccessUrl("/").permitAll())
+        .oauth2ResourceServer( oa -> {
+          oa.jwt(Customizer.withDefaults());
+        })
+//        .oauth2ResourceServer(oauth2ResourceServer ->
+//            oauth2ResourceServer
+//                .jwt(jwt ->
+//                    jwt.decoder(Customizer.withDefaults())
+//                )
 //        )
-//        .formLogin();
+    ;
 
     return http.build();
   }
 
+//  @Bean
+//  public JwtDecoder jwtDecoder() {
+//    return NimbusJwtDecoder
+//        .withPublicKey("fg")
+//        .build();
+//  }
+
+//  @Bean
+//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    // hasAnyAuthority - позволяет работать с ролями без префикса ROLE_
+//    // hasAnyRole - в бд обязательно должны быть роли с префиксом ROLE_
+//
+////    http
+////        .csrf().disable()
+////        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+////        .and()
+////        .authorizeHttpRequests(authorize ->
+////                authorize
+////                    .antMatchers("/**")
+////                    .permitAll()
+////
+////                    // work
+////                    .antMatchers(HttpMethod.GET, "/api/v1/work", "/api/v1/work/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.POST, "/api/v1/work")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/work/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/work/*")
+////                    .hasAnyRole(Authority.ADMIN.name())
+////
+////                    // editions
+////                    .antMatchers(HttpMethod.POST, "/api/v1/work/*/edition")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.GET, "/api/v1/work/*/edition")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/edition/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/edition/*")
+////                    .hasAnyRole(Authority.ADMIN.name())
+////
+////                    // commentary
+////                    .antMatchers(HttpMethod.GET, "/api/v1/work/*/commentary")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.POST, "/api/v1/work/*/commentary")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/commentary/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/commentary/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    // genre
+////                    .antMatchers(HttpMethod.GET, "/api/v1/genre")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/genre?oldGenre=*")
+////                    .hasAnyRole(Authority.ADMIN.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/genre")
+////                    .hasAnyRole(Authority.ADMIN.name())
+////
+////                    // note
+////                    .antMatchers(HttpMethod.GET, "/api/v1/note", "/api/v1/note/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.POST, "/api/v1/note")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/note/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/note/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    // publisher
+////                    .antMatchers(HttpMethod.GET, "/api/v1/publisher", "/api/v1/publisher/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.POST, "/api/v1/publisher")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/publisher/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/publisher/*")
+////                    .hasAnyRole(Authority.ADMIN.name())
+////
+////                    // shelf
+////                    .antMatchers(HttpMethod.GET, "/api/v1/shelf", "/api/v1/shelf/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name(),
+////                        Authority.READER.name()) // для любой роли доступен.
+////
+////                    .antMatchers(HttpMethod.POST, "/api/v1/shelf")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.PUT, "/api/v1/shelf/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    .antMatchers(HttpMethod.DELETE, "/api/v1/shelf/*")
+////                    .hasAnyRole(Authority.ADMIN.name(), Authority.OPERATOR.name())
+////
+////                    // register
+////                    .antMatchers("/api/v1/register").permitAll()
+////                    .anyRequest().authenticated()
+////            // обязательно любой запрос должен быть аутентифицирован
+////
+////        )
+////        .formLogin();
+//
+//    return http.build();
+//  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {

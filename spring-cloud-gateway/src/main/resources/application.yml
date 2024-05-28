@@ -1,6 +1,3 @@
-server:
-  port: 8760
-
 spring:
   application:
     name: spring-cloud-gateway
@@ -27,45 +24,38 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: coub-com
-          uri: https://coub.com/
-          predicates:
-            - Path=/cc/**
-          filters:
-            - StripPrefix=1
-            - AddRequestHeader=Accept-Encoding, 'gzip, deflate, br'
-            - AddRequestHeader=User-Agent, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0'
-        #            - name: RequestRateLimiter
-        #              args:
-        #                redis-rate-limiter.replenishRate: 2
-        #                redis-rate-limiter.burstCapacity: 5
-        #                redis-rate-limiter.requestedTokens: 10
-        - id: spring-eureka-registry
-          uri: lb://spring-eureka-registry
+        - id: library-discovery-server
+          uri: lb://library-discovery-server
           predicates:
             - Path=/registry/**
           filters:
             - StripPrefix=1
         - id: eureka
-          uri: lb://spring-eureka-registry
+          uri: lb://library-discovery-server
           predicates:
             - Path=/eureka/**
-        - id: subscriptions-holder
-          uri: lb://subscriptions-holder
+        - id: library
+          uri: lb://library-backend
           predicates:
-            - Path=/sh/**
+            - Path=/library
           filters:
-            - StripPrefix=1
-        - id: kafka-message-producer
-          uri: lb://kafka-message-producer
-          predicates:
-            - Path=/kmp/**
-          filters:
-            - StripPrefix=1
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
 
-info:
-  app:
-    name: ${spring.application.name}
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: spring
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,resource.read
+        provider:
+          spring:
+            issuer-uri: ${OAUTH_PROVIDER:http://localhost:9000}
 
 eureka:
   client:
@@ -109,6 +99,13 @@ management:
     distribution:
       percentiles-histogram:
         http.server.requests: true
+
+server:
+  port: 8080
+
+info:
+  app:
+    name: ${spring.application.name}
 
 logging:
   level:

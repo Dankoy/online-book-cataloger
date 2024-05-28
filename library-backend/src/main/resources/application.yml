@@ -15,8 +15,14 @@ spring:
   jmx:
     enabled: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH_PROVIDER:http://localhost:9000}
+
 server:
-  port: 8080
+  port: 8090
 
 
 info:
@@ -53,8 +59,8 @@ management:
       enabled: true
     diskspace:
       enabled: true
-    circuitbreakers:
-      enabled: true
+  #    circuitbreakers:
+  #      enabled: true
   tracing:
     sampling:
       probability: 1.0
@@ -115,7 +121,7 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: "http://localhost:8761/eureka"
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
     register-with-eureka: true
     fetch-registry: true
     eureka-service-url-poll-interval-seconds: 5000

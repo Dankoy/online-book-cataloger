@@ -131,11 +131,17 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+
     <!-- For Spring Security testing -->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
     </dependency>
+
 
     <!-- resilence dependencies   -->
     <!-- не работает. конфликт с spring cloud -->
