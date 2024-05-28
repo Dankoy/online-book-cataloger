@@ -3,9 +3,26 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        issuer:
+        issuer: http://localhost:9000
 
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ${MONGODB_DATABASE:admin} # library
+      port: ${MONGODB_PORT:27017} # 27017
+      host: ${MONGODB_HOST:localhost} # docker container name
+      # обязательно при шифровании пароля необходимо явно указать алгоритм и прочие параметры,
+      # что бы не напороться на несоответствие
+      password: ENC(ukzZHI9tZCXVJ0wTuHD+QykLgZwdO+Ma) # mongopass
+      username: admin
+  jmx:
+    enabled: true
 
+jasypt:
+  encryptor:
+    password: ${JASYPT_PASSWORD:masterpassword}
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
 
 server:
   port: 9000
@@ -46,8 +63,12 @@ management:
 logging:
   level:
     root: INFO
+    org:
+      springframework:
+        security: debug
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
 
 eureka:
   client:

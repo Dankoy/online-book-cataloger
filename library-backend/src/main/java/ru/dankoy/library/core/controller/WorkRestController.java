@@ -26,7 +26,6 @@ public class WorkRestController {
   private final WorkService workService;
 
   @GetMapping(value = "/api/v1/work",
-      consumes = {"application/json"},
       produces = {"application/json"})
   public List<WorkDTO> getAll() {
 
@@ -50,7 +49,6 @@ public class WorkRestController {
   }
 
   @GetMapping(value = "/api/v1/work/{id}",
-      consumes = {"application/json"},
       produces = {"application/json"})
   public WorkDTO getById(@PathVariable String id) {
 
