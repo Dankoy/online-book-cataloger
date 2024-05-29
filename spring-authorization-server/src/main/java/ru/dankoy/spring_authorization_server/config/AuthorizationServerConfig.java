@@ -9,33 +9,32 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
+import java.time.Duration;
+import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationContext;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationException;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationToken;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationValidator;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -52,7 +51,7 @@ public class AuthorizationServerConfig {
 
     OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
     http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-        .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
+        .oidc(Customizer.withDefaults());  // Enable OpenID Connect 1.0
     http
 //        .csrf(Customizer.withDefaults())
 //        .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
@@ -70,6 +69,19 @@ public class AuthorizationServerConfig {
   }
 
   @Bean
+  public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+    return context -> {
+      if (context.getTokenType().getValue() == OAuth2TokenType.ACCESS_TOKEN.getValue()) {
+        Authentication principal = context.getPrincipal();
+        Set<String> authorities = principal.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toSet());
+        context.getClaims().claim("user-authorities", authorities);
+      }
+    };
+  }
+
+  @Bean
   public RegisteredClientRepository registeredClientRepository() {
     RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
         .clientId("gateway")
@@ -82,6 +94,12 @@ public class AuthorizationServerConfig {
         .scope(OidcScopes.OPENID)
         .scope("library.read")
 //        .scope("library.write")
+        .tokenSettings(
+            TokenSettings.builder()
+                .refreshTokenTimeToLive(Duration.ofHours(12))
+                .accessTokenTimeToLive(Duration.ofMinutes(1))
+                .build()
+        )
         .build();
 
     return new InMemoryRegisteredClientRepository(registeredClient);
