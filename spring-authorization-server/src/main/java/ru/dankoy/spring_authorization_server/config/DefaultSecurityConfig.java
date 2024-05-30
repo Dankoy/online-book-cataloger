@@ -2,6 +2,7 @@ package ru.dankoy.spring_authorization_server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class DefaultSecurityConfig {
 
   @Bean
-  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
     http
         .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(a -> a
+            .anyRequest().authenticated()
+        )
         .formLogin(Customizer.withDefaults())
     ;
 

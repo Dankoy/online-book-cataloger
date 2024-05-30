@@ -10,6 +10,7 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,8 +21,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -55,7 +55,7 @@ public class AuthorizationServerConfig {
     http
 //        .csrf(Customizer.withDefaults())
 //        .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+//        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
         .exceptionHandling((exceptions) -> exceptions
             .defaultAuthenticationEntryPointFor(
                 new LoginUrlAuthenticationEntryPoint("/login"),
@@ -68,15 +68,21 @@ public class AuthorizationServerConfig {
     return http.build();
   }
 
+
+  // add roles to jwt for authorization
   @Bean
-  public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
-    return context -> {
-      if (context.getTokenType().getValue() == OAuth2TokenType.ACCESS_TOKEN.getValue()) {
-        Authentication principal = context.getPrincipal();
-        Set<String> authorities = principal.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toSet());
-        context.getClaims().claim("user-authorities", authorities);
+  public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
+    return (context) -> {
+      if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+        context.getClaims().claims((claims) -> {
+          Set<String> roles = AuthorityUtils.authorityListToSet(
+                  context.getPrincipal().getAuthorities())
+              .stream()
+              .map(c -> c.replaceFirst("^ROLE_", ""))
+              .collect(
+                  Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+          claims.put("roles", roles);
+        });
       }
     };
   }
@@ -92,8 +98,10 @@ public class AuthorizationServerConfig {
         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
         .redirectUri("http://localhost:8080/login/oauth2/code/gateway")
         .scope(OidcScopes.OPENID)
-        .scope("library.read")
-//        .scope("library.write")
+        .scope(OidcScopes.PROFILE)
+        .scope(OidcScopes.PHONE)
+        .scope(OidcScopes.EMAIL)
+        .scope("offline_access")
         .tokenSettings(
             TokenSettings.builder()
                 .refreshTokenTimeToLive(Duration.ofHours(12))

@@ -54,7 +54,7 @@ spring:
             client-secret: secret # secret
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: openid,library.read
+            scope: openid,profile,email,offline_access
         provider:
           spring:
             issuer-uri: ${OAUTH_PROVIDER:http://localhost:9000}

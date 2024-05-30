@@ -1,5 +1,4 @@
-package ru.dankoy.library.core.controller;
-
+package ru.dankoy.spring_authorization_server.core.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,11 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.dankoy.library.config.security.Authority;
-import ru.dankoy.library.core.dto.user.UserRegisterDTO;
-import ru.dankoy.library.core.exceptions.RegistrationException;
-import ru.dankoy.library.core.service.user.UserService;
-import ru.dankoy.library.core.service.userrole.UserRoleService;
+import ru.dankoy.spring_authorization_server.config.Authority;
+import ru.dankoy.spring_authorization_server.core.dto.user.UserRegisterDTO;
+import ru.dankoy.spring_authorization_server.core.exceptions.RegistrationException;
+import ru.dankoy.spring_authorization_server.core.service.user.UserService;
+import ru.dankoy.spring_authorization_server.core.service.userrole.UserRoleService;
 
 @RequiredArgsConstructor
 @RestController
