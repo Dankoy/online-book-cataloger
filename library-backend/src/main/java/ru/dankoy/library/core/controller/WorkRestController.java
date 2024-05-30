@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,8 +78,8 @@ public class WorkRestController {
   }
 
   @PostMapping(value = "/api/v1/work",
-      consumes = {"application/json"},
-      produces = {"application/json"})
+      consumes = {MediaType.APPLICATION_JSON_VALUE} ,
+      produces = {MediaType.APPLICATION_JSON_VALUE})
   public WorkDTO create(@RequestBody WorkDTO workDTO) {
 
     var book = WorkDTO.toWork(workDTO);

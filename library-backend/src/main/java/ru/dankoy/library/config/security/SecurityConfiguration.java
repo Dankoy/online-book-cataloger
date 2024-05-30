@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.stereotype.Component;
+import ru.dankoy.library.core.exceptions.api.security.AccessDeniedHandlerRest;
 
 
 @Configuration
@@ -43,8 +44,10 @@ public class SecurityConfiguration {
         // Disable CSRF because of state-less session-management
         .csrf(CsrfConfigurer::disable)
 
-        .authorizeHttpRequests(a
-            -> a.requestMatchers("/", "/error", "/webjars/**")
+        .exceptionHandling(e -> e.accessDeniedHandler(new AccessDeniedHandlerRest()))
+
+        .authorizeHttpRequests(a -> a
+            .requestMatchers("/", "/error", "403", "/webjars/**")
             .permitAll()
 
             .requestMatchers("/actuator/health/readiness", "/actuator/health/liveness",
