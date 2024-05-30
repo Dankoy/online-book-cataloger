@@ -27,10 +27,10 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
       <exclusions> <!-- конфликты внутри самой либы-->
-<!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
-<!--          <groupId>com.netflix.servo</groupId>-->
-<!--          <artifactId>servo-core</artifactId>-->
-<!--        </exclusion>-->
+        <!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
+        <!--          <groupId>com.netflix.servo</groupId>-->
+        <!--          <artifactId>servo-core</artifactId>-->
+        <!--        </exclusion>-->
         <exclusion>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
@@ -38,7 +38,7 @@
       </exclusions>
     </dependency>
 
-<!--    взамен той что убрал эксклюдом-->
+    <!--    взамен той что убрал эксклюдом-->
     <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -51,11 +51,11 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>org.springframework.boot</groupId>-->
-<!--      <artifactId>spring-boot-configuration-processor</artifactId>-->
-<!--      <optional>true</optional>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-configuration-processor</artifactId>-->
+    <!--      <optional>true</optional>-->
+    <!--    </dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -81,12 +81,18 @@
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
 
-<!--    Use testcontainers -->
-<!--    <dependency>-->
-<!--      <groupId>de.flapdoodle.embed</groupId>-->
-<!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.5.0</version>
+    </dependency>
+
+    <!--    Use testcontainers -->
+    <!--    <dependency>-->
+    <!--      <groupId>de.flapdoodle.embed</groupId>-->
+    <!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>com.github.cloudyrock.mongock</groupId>
@@ -111,20 +117,27 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-rest</artifactId>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-starter-data-rest</artifactId>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
+    <!--    necessary for jwt token parsing-->
     <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-rest-hal-explorer</artifactId>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <!--      <version>2.9.0</version>-->
     </dependency>
+
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.data</groupId>-->
+    <!--      <artifactId>spring-data-rest-hal-explorer</artifactId>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>com.github.ulisesbocchio</groupId>
@@ -151,18 +164,18 @@
     <!-- resilence dependencies   -->
     <!-- не работает. конфликт с spring cloud -->
     <!-- https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-bom -->
-<!--    <dependency>-->
-<!--      <groupId>io.github.resilience4j</groupId>-->
-<!--      <artifactId>resilience4j-bom</artifactId>-->
-<!--      <version>${resilience4j.version}</version>-->
-<!--      <type>pom</type>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>io.github.resilience4j</groupId>-->
+    <!--      <artifactId>resilience4j-bom</artifactId>-->
+    <!--      <version>${resilience4j.version}</version>-->
+    <!--      <type>pom</type>-->
+    <!--    </dependency>-->
 
-<!--    <dependency>-->
-<!--      <groupId>io.github.resilience4j</groupId>-->
-<!--      <artifactId>resilience4j-spring-boot2</artifactId>-->
-<!--      <version>${resilience4j.version}</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>io.github.resilience4j</groupId>-->
+    <!--      <artifactId>resilience4j-spring-boot2</artifactId>-->
+    <!--      <version>${resilience4j.version}</version>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -174,37 +187,37 @@
   </dependencies>
 
 
-<!--  <profiles>-->
-<!--    <profile>-->
-<!--      <id>backend</id>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>com.github.eirslett</groupId>-->
-<!--            <artifactId>frontend-maven-plugin</artifactId>-->
-<!--            <version>1.12.1</version>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <id>install node and npm-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--              <execution>-->
-<!--                <id>npm install-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--              <execution>-->
-<!--                <id>npm run build-->
-<!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-<!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--  </profiles>-->
+  <!--  <profiles>-->
+  <!--    <profile>-->
+  <!--      <id>backend</id>-->
+  <!--      <build>-->
+  <!--        <plugins>-->
+  <!--          <plugin>-->
+  <!--            <groupId>com.github.eirslett</groupId>-->
+  <!--            <artifactId>frontend-maven-plugin</artifactId>-->
+  <!--            <version>1.12.1</version>-->
+  <!--            <executions>-->
+  <!--              <execution>-->
+  <!--                <id>install node and npm-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--              <execution>-->
+  <!--                <id>npm install-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--              <execution>-->
+  <!--                <id>npm run build-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--            </executions>-->
+  <!--          </plugin>-->
+  <!--        </plugins>-->
+  <!--      </build>-->
+  <!--    </profile>-->
+  <!--  </profiles>-->
 
 
   <build>
@@ -215,12 +228,12 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <executable>true</executable>
-            <excludes>
-              <exclude>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-              </exclude>
-            </excludes>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
         </configuration>
       </plugin>
 

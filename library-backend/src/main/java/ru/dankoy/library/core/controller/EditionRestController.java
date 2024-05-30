@@ -1,6 +1,7 @@
 package ru.dankoy.library.core.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.edition.EditionService;
 
+@SecurityRequirement(name="Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class EditionRestController {

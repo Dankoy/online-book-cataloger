@@ -1,6 +1,7 @@
 package ru.dankoy.library.core.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,14 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.author.AuthorService;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 public class AuthorRestController {
 
   private final AuthorService authorService;
 
-
+  @SecurityRequirement(name = "Bearer Authentication")
   @GetMapping("/api/v1/author")
   public List<AuthorDTO> getAuthorList() {
 

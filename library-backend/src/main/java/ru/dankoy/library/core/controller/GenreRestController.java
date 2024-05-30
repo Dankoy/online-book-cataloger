@@ -1,6 +1,7 @@
 package ru.dankoy.library.core.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import ru.dankoy.library.core.domain.Genre;
 import ru.dankoy.library.core.dto.genre.GenreDTO;
 import ru.dankoy.library.core.service.genre.GenreService;
 
+@SecurityRequirement(name="Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class GenreRestController {

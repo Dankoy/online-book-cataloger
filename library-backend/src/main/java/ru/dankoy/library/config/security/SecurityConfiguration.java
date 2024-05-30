@@ -47,7 +47,9 @@ public class SecurityConfiguration {
         .exceptionHandling(e -> e.accessDeniedHandler(new AccessDeniedHandlerRest()))
 
         .authorizeHttpRequests(a -> a
-            .requestMatchers("/", "/error", "403", "/webjars/**")
+            .requestMatchers("/", "/error", "/webjars/**")
+            .permitAll()
+            .requestMatchers("/explorer", "/explorer/**", "/swagger-ui", "/swagger-ui/**")
             .permitAll()
 
             .requestMatchers("/actuator/health/readiness", "/actuator/health/liveness",
