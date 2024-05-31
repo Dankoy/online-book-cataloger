@@ -51,7 +51,6 @@
 
   <modules>
     <module>library-backend</module>
-<!--    <module>library-auth</module>-->
     <module>discovery-server</module>
     <module>spring-cloud-gateway</module>
     <module>spring-authorization-server</module>

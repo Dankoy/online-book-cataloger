@@ -154,7 +154,7 @@ public class SecurityConfiguration {
         .exceptionHandling(e
             -> e.authenticationEntryPoint(
             new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-        .logout(l -> l.logoutSuccessUrl("/").permitAll())
+        .logout(l -> l.logoutSuccessUrl("/login").permitAll())
         .oauth2ResourceServer(
             oa -> oa.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
     ;
