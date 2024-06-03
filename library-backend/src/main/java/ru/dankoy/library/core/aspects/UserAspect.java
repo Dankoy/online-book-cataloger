@@ -14,9 +14,8 @@ import ru.dankoy.library.core.domain.User;
 
 /**
  * @author turtality
- * <p>
- * Aspect testing.
- * <p>
+ *     <p>Aspect testing.
+ *     <p>
  */
 @Aspect
 @Component
@@ -42,12 +41,10 @@ public class UserAspect {
     logger.info("After {}", joinPoint.getSignature());
 
     return res;
-
   }
 
   @Around("@annotation(ru.dankoy.library.core.aspects.AddCurrentUser) && args(shelf)")
-  public Object addCurrentUser(ProceedingJoinPoint joinPoint, Shelf shelf)
-      throws Throwable {
+  public Object addCurrentUser(ProceedingJoinPoint joinPoint, Shelf shelf) throws Throwable {
 
     // Добавляет текущего юзера в объект комментария при создании или модификации комментария
 
@@ -64,12 +61,10 @@ public class UserAspect {
     logger.info("After {}", joinPoint.getSignature());
 
     return res;
-
   }
 
   @Around("@annotation(ru.dankoy.library.core.aspects.AddCurrentUser) && args(note)")
-  public Object addCurrentUser(ProceedingJoinPoint joinPoint, Note note)
-      throws Throwable {
+  public Object addCurrentUser(ProceedingJoinPoint joinPoint, Note note) throws Throwable {
 
     // Добавляет текущего юзера в объект комментария при создании или модификации комментария
 
@@ -85,19 +80,14 @@ public class UserAspect {
     logger.info("After {}", joinPoint.getSignature());
 
     return res;
-
   }
 
   private User getPrincipal() {
-    return (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 
   private Logger getLogger(ProceedingJoinPoint joinPoint) {
 
     return LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-
   }
-
 }

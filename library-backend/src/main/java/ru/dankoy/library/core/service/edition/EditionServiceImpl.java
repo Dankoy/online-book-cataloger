@@ -8,7 +8,6 @@ import ru.dankoy.library.core.domain.Edition;
 import ru.dankoy.library.core.repository.edition.EditionRepository;
 import ru.dankoy.library.core.service.work.WorkService;
 
-
 @Service
 @RequiredArgsConstructor
 public class EditionServiceImpl implements EditionService {
@@ -35,13 +34,13 @@ public class EditionServiceImpl implements EditionService {
 
     var createdEdition = editionRepository.save(edition);
 
-    work.ifPresent(work1 -> {
-      work1.getEditions().add(createdEdition);
-      workService.update(work1);
-    });
+    work.ifPresent(
+        work1 -> {
+          work1.getEditions().add(createdEdition);
+          workService.update(work1);
+        });
 
     return createdEdition;
-
   }
 
   @Override
@@ -49,7 +48,6 @@ public class EditionServiceImpl implements EditionService {
 
     var optionalEdition = editionRepository.findById(id);
     optionalEdition.ifPresent(editionRepository::deleteAndCheckNotesShelvesWorks);
-
   }
 
   @Override

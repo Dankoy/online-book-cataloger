@@ -20,13 +20,13 @@ public class GenreServiceMongo implements GenreService {
 
     List<Work> works = workService.findAllByGenreName(oldGenre);
 
-    works.forEach(b -> {
-      b.getGenres().remove(oldGenre);
-      b.getGenres().add(newGenre);
-    });
+    works.forEach(
+        b -> {
+          b.getGenres().remove(oldGenre);
+          b.getGenres().add(newGenre);
+        });
 
     workService.updateMultiple(works);
-
   }
 
   @Override
@@ -37,17 +37,12 @@ public class GenreServiceMongo implements GenreService {
     works.forEach(b -> b.getGenres().remove(genre));
 
     workService.updateMultiple(works);
-
   }
-
 
   @Override
   public Set<Genre> getAllGenres() {
     var books = workService.findAll();
 
-    return books.stream().flatMap(b -> b.getGenres().stream())
-        .collect(Collectors.toSet());
-
+    return books.stream().flatMap(b -> b.getGenres().stream()).collect(Collectors.toSet());
   }
-
 }

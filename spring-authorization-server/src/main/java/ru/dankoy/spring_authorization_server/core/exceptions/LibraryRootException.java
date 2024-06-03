@@ -9,5 +9,4 @@ public class LibraryRootException extends RuntimeException {
   public LibraryRootException(String message) {
     super(message);
   }
-
 }

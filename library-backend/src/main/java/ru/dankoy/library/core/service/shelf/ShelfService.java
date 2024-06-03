@@ -15,5 +15,4 @@ public interface ShelfService {
   Set<Shelf> findAll();
 
   Shelf update(Shelf shelf);
-
 }

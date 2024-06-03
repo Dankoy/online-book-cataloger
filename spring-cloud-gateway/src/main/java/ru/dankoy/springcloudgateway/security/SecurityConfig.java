@@ -1,6 +1,5 @@
 package ru.dankoy.springcloudgateway.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,19 +16,20 @@ import org.springframework.security.web.server.header.XFrameOptionsServerHttpHea
 public class SecurityConfig {
 
   @Bean
-  public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
-      ReactiveClientRegistrationRepository clientRegistrationRepository) {
+  public SecurityWebFilterChain springSecurityFilterChain(
+      ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) {
 
     // Authenticate through configured OpenID Provider
     http.oauth2Login(Customizer.withDefaults());
 
     // Also logout at the OpenID Connect provider
-    http.logout(logout -> logout.logoutSuccessHandler(
-        new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
+    http.logout(
+        logout ->
+            logout.logoutSuccessHandler(
+                new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
 
     // Require authentication for all requests
-    http.authorizeExchange(auth -> auth
-        .anyExchange().authenticated());
+    http.authorizeExchange(auth -> auth.anyExchange().authenticated());
 
     // Allow showing /home within a frame
     http.headers(h -> h.frameOptions(f -> f.mode(Mode.SAMEORIGIN)));
@@ -39,6 +39,4 @@ public class SecurityConfig {
 
     return http.build();
   }
-
-
 }

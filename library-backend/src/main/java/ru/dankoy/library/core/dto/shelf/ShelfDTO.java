@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.shelf;
 
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,7 +26,6 @@ public class ShelfDTO {
 
   private LocalDateTime dateModified;
 
-
   public static Shelf fromDTO(ShelfDTO dto) {
 
     return new Shelf(
@@ -36,9 +34,7 @@ public class ShelfDTO {
         null,
         dto.editions.stream().map(EditionDTO::fromDTO).collect(Collectors.toSet()),
         null,
-        null
-    );
-
+        null);
   }
 
   public static ShelfDTO toDTO(Shelf shelf) {
@@ -50,8 +46,5 @@ public class ShelfDTO {
         .dateCreated(shelf.getDateCreated())
         .dateModified(shelf.getDateModified())
         .build();
-
   }
-
-
 }

@@ -1,6 +1,5 @@
 package ru.dankoy.spring_authorization_server.core.dto.user;
 
-
 import java.util.HashSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,16 +16,6 @@ public class UserDTO {
   private String id;
 
   public static User fromDTO(UserDTO dto) {
-    return new User(
-        dto.id,
-        null,
-        null,
-        false,
-        false,
-        false,
-        false,
-        new HashSet<>()
-    );
+    return new User(dto.id, null, null, false, false, false, false, new HashSet<>());
   }
-
 }

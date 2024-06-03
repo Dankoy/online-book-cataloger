@@ -7,5 +7,4 @@ public class EntityNotFoundException extends Hw5RootException {
   public EntityNotFoundException(String id, Entity entity) {
     super(String.format(MESSAGE, entity.getName(), id));
   }
-
 }

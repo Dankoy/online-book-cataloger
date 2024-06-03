@@ -15,5 +15,4 @@ public interface PublisherService {
   void deleteById(String id);
 
   Publisher update(Publisher publisher);
-
 }

@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.commentary;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,21 +18,11 @@ public class CommentaryModifyDTO {
 
   private String text;
 
-
   public static Commentary toCommentary(CommentaryModifyDTO dto) {
-    return new Commentary(dto.getId(),
-        dto.getText(),
-        null,
-        null,
-        null,
-        null
-    );
+    return new Commentary(dto.getId(), dto.getText(), null, null, null, null);
   }
 
   public static CommentaryModifyDTO toDTO(Commentary commentary) {
-    return CommentaryModifyDTO.builder()
-        .id(commentary.getId())
-        .text(commentary.getText())
-        .build();
+    return CommentaryModifyDTO.builder().id(commentary.getId()).text(commentary.getText()).build();
   }
 }

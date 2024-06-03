@@ -13,5 +13,4 @@ public class MongodbAuditionConfig {
   public AuditorAware<String> myAuditorProvider() {
     return new AuditorAwareImpl();
   }
-
 }

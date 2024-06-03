@@ -1,6 +1,5 @@
 package ru.dankoy.spring_authorization_server.config;
 
-
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -39,11 +38,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-// look how to configure in spring boot manner https://www.baeldung.com/spring-security-oauth-auth-server
+// look how to configure in spring boot manner
+// https://www.baeldung.com/spring-security-oauth-auth-server
 
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
-
 
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -52,102 +51,108 @@ public class AuthorizationServerConfig {
     OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
     http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-        .oidc(Customizer.withDefaults());  // Enable OpenID Connect 1.0
+        .oidc(Customizer.withDefaults()); // Enable OpenID Connect 1.0
     http
-//        .csrf(Customizer.withDefaults())
-//        .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-//        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-        .exceptionHandling((exceptions) -> exceptions
-            .defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"),
-                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-            )
-        )
+        //        .csrf(Customizer.withDefaults())
+        //        .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+        //        .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+        .exceptionHandling(
+            (exceptions) ->
+                exceptions.defaultAuthenticationEntryPointFor(
+                    new LoginUrlAuthenticationEntryPoint("/login"),
+                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)))
         .formLogin(Customizer.withDefaults())
-        .logout(Customizer.withDefaults())
-    ;
+        .logout(Customizer.withDefaults());
 
     return http.build();
   }
-
 
   // add roles to jwt for authorization
   @Bean
   public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
     return (context) -> {
       if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-        context.getClaims().claims((claims) -> {
-          Set<String> roles = AuthorityUtils.authorityListToSet(
-                  context.getPrincipal().getAuthorities())
-              .stream()
-              .map(c -> c.replaceFirst("^ROLE_", ""))
-              .collect(
-                  Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
-          claims.put("roles", roles);
-        });
+        context
+            .getClaims()
+            .claims(
+                (claims) -> {
+                  Set<String> roles =
+                      AuthorityUtils.authorityListToSet(context.getPrincipal().getAuthorities())
+                          .stream()
+                          .map(c -> c.replaceFirst("^ROLE_", ""))
+                          .collect(
+                              Collectors.collectingAndThen(
+                                  Collectors.toSet(), Collections::unmodifiableSet));
+                  claims.put("roles", roles);
+                });
       }
     };
   }
 
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
-    RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-        .clientId("gateway")
-        .clientSecret("$2a$10$ur3iG0Do9xyrqTWJHGZQJ.uY8mpxernuB7sO1ZPWUZMBgsaW3ugmy") //secret
-        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-        .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-        .redirectUri("http://localhost:8080/login/oauth2/code/gateway")
-        .scope(OidcScopes.OPENID)
-        .scope(OidcScopes.PROFILE)
-        .scope(OidcScopes.PHONE)
-        .scope(OidcScopes.EMAIL)
-        .scope("offline_access")
-        .tokenSettings(
-            TokenSettings.builder()
-                .refreshTokenTimeToLive(Duration.ofHours(12))
-                .accessTokenTimeToLive(Duration.ofMinutes(1))
-                .build()
-        )
-        .build();
+    RegisteredClient registeredClient =
+        RegisteredClient.withId(UUID.randomUUID().toString())
+            .clientId("gateway")
+            .clientSecret("$2a$10$ur3iG0Do9xyrqTWJHGZQJ.uY8mpxernuB7sO1ZPWUZMBgsaW3ugmy") // secret
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .redirectUri("http://localhost:8080/login/oauth2/code/gateway")
+            .scope(OidcScopes.OPENID)
+            .scope(OidcScopes.PROFILE)
+            .scope(OidcScopes.PHONE)
+            .scope(OidcScopes.EMAIL)
+            .scope("offline_access")
+            .tokenSettings(
+                TokenSettings.builder()
+                    .refreshTokenTimeToLive(Duration.ofHours(12))
+                    .accessTokenTimeToLive(Duration.ofMinutes(1))
+                    .build())
+            .build();
 
     return new InMemoryRegisteredClientRepository(registeredClient);
   }
 
-//  private Consumer<List<AuthenticationProvider>> configureAuthenticationValidator() {
-//    return (authenticationProviders) ->
-//        authenticationProviders.forEach((authenticationProvider) -> {
-//          if (authenticationProvider instanceof OAuth2AuthorizationCodeRequestAuthenticationProvider) {
-//            Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> authenticationValidator =
-//                // Override default redirect_uri validator
-//                new CustomRedirectUriValidator()
-//                    // Reuse default scope validator
-//                    .andThen(OAuth2AuthorizationCodeRequestAuthenticationValidator.DEFAULT_SCOPE_VALIDATOR);
-//
-//            ((OAuth2AuthorizationCodeRequestAuthenticationProvider) authenticationProvider)
-//                .setAuthenticationValidator(authenticationValidator);
-//          }
-//        });
-//  }
-//
-//  static class CustomRedirectUriValidator implements
-//      Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> {
-//
-//    @Override
-//    public void accept(OAuth2AuthorizationCodeRequestAuthenticationContext authenticationContext) {
-//      OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication =
-//          authenticationContext.getAuthentication();
-//      RegisteredClient registeredClient = authenticationContext.getRegisteredClient();
-//      String requestedRedirectUri = authorizationCodeRequestAuthentication.getRedirectUri();
-//
-//      // Use exact string matching when comparing client redirect URIs against pre-registered URIs
-//      if (!registeredClient.getRedirectUris().contains(requestedRedirectUri)) {
-//        OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
-//        throw new OAuth2AuthorizationCodeRequestAuthenticationException(error, null);
-//      }
-//    }
-//  }
+  //  private Consumer<List<AuthenticationProvider>> configureAuthenticationValidator() {
+  //    return (authenticationProviders) ->
+  //        authenticationProviders.forEach((authenticationProvider) -> {
+  //          if (authenticationProvider instanceof
+  // OAuth2AuthorizationCodeRequestAuthenticationProvider) {
+  //            Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext>
+  // authenticationValidator =
+  //                // Override default redirect_uri validator
+  //                new CustomRedirectUriValidator()
+  //                    // Reuse default scope validator
+  //
+  // .andThen(OAuth2AuthorizationCodeRequestAuthenticationValidator.DEFAULT_SCOPE_VALIDATOR);
+  //
+  //            ((OAuth2AuthorizationCodeRequestAuthenticationProvider) authenticationProvider)
+  //                .setAuthenticationValidator(authenticationValidator);
+  //          }
+  //        });
+  //  }
+  //
+  //  static class CustomRedirectUriValidator implements
+  //      Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> {
+  //
+  //    @Override
+  //    public void accept(OAuth2AuthorizationCodeRequestAuthenticationContext
+  // authenticationContext) {
+  //      OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication =
+  //          authenticationContext.getAuthentication();
+  //      RegisteredClient registeredClient = authenticationContext.getRegisteredClient();
+  //      String requestedRedirectUri = authorizationCodeRequestAuthentication.getRedirectUri();
+  //
+  //      // Use exact string matching when comparing client redirect URIs against pre-registered
+  // URIs
+  //      if (!registeredClient.getRedirectUris().contains(requestedRedirectUri)) {
+  //        OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
+  //        throw new OAuth2AuthorizationCodeRequestAuthenticationException(error, null);
+  //      }
+  //    }
+  //  }
 
   @Bean
   public JWKSource<SecurityContext> jwkSource() {
@@ -180,9 +185,6 @@ public class AuthorizationServerConfig {
 
   @Bean
   public AuthorizationServerSettings providerSettings() {
-    return AuthorizationServerSettings.builder()
-        .issuer("http://localhost:9000")
-        .build();
+    return AuthorizationServerSettings.builder().issuer("http://localhost:9000").build();
   }
-
 }

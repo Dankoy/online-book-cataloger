@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,13 +25,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("commentaries")
 public class Commentary {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("text")
   private String text;
 
-  @DocumentReference(collection = "users", lookup = "{ '_id' : ?#{#target} }") // таким образом в бд хранится только id
+  @DocumentReference(
+      collection = "users",
+      lookup = "{ '_id' : ?#{#target} }") // таким образом в бд хранится только id
   @Setter
   @Field("user")
   private User user; // id
@@ -51,5 +50,4 @@ public class Commentary {
   @LastModifiedDate
   @Field("dt_modified")
   private LocalDateTime dateModified;
-
 }

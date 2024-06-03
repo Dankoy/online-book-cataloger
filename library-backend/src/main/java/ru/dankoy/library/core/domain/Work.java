@@ -19,8 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
-//@SuperBuilder
+// @SuperBuilder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,8 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("works")
 public class Work {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("name")
   private String name;
@@ -71,5 +69,4 @@ public class Work {
   public Work(String id) {
     this.id = id;
   }
-
 }

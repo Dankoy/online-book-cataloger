@@ -20,23 +20,13 @@ public class MongockHealthIndicator implements HealthIndicator {
 
     var list = getList();
 
-    long countErrors = list.stream()
-        .filter(l -> !l.getState().equals(SUCCESS_STATE))
-        .count();
+    long countErrors = list.stream().filter(l -> !l.getState().equals(SUCCESS_STATE)).count();
 
     if (countErrors > 0) {
-      return Health
-          .down()
-          .withDetail("mongock", "failed")
-          .withDetail("logs", list)
-          .build();
+      return Health.down().withDetail("mongock", "failed").withDetail("logs", list).build();
     }
 
-    return Health
-        .up()
-        .withDetail("mongock", "success")
-        .withDetail("logs", list)
-        .build();
+    return Health.up().withDetail("mongock", "success").withDetail("logs", list).build();
   }
 
   private List<MongockChangeLog> getList() {

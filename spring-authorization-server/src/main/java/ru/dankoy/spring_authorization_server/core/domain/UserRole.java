@@ -1,6 +1,5 @@
 package ru.dankoy.spring_authorization_server.core.domain;
 
-
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
@@ -16,8 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 public class UserRole implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1905122041950251207L;
+  @Serial private static final long serialVersionUID = 1905122041950251207L;
 
   @Id
   @Field(name = "id")
@@ -25,5 +23,4 @@ public class UserRole implements Serializable {
 
   @Field(name = "role")
   private String role;
-
 }

@@ -15,7 +15,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("publishers")
 public class Publisher {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("name")
   private String name;

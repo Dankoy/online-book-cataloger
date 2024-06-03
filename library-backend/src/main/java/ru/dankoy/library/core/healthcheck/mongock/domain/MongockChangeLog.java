@@ -22,8 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("mongockChangeLog")
 public class MongockChangeLog {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("executionId")
   private String executionId;
@@ -53,6 +52,4 @@ public class MongockChangeLog {
 
   @Field("executionHostname")
   private String executionHostname;
-
-
 }

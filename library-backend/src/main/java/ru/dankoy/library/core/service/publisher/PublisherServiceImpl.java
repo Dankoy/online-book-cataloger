@@ -8,7 +8,6 @@ import ru.dankoy.library.core.aspects.AddCreatedMetadata;
 import ru.dankoy.library.core.domain.Publisher;
 import ru.dankoy.library.core.repository.publisher.PublisherRepository;
 
-
 @Service
 @RequiredArgsConstructor
 public class PublisherServiceImpl implements PublisherService {

@@ -9,7 +9,6 @@ import lombok.ToString;
 import ru.dankoy.library.core.domain.Commentary;
 import ru.dankoy.library.core.dto.work.WorkCommentaryDTO;
 
-
 @ToString
 @Getter
 @Builder
@@ -21,17 +20,11 @@ public class CommentaryCreateDTO {
 
   private String text;
 
-  @Setter
-  private WorkCommentaryDTO work;
+  @Setter private WorkCommentaryDTO work;
 
   public static Commentary toCommentary(CommentaryCreateDTO dto) {
-    return new Commentary(dto.getId(),
-        dto.getText(),
-        null,
-        WorkCommentaryDTO.fromDTO(dto.getWork()),
-        null,
-        null
-    );
+    return new Commentary(
+        dto.getId(), dto.getText(), null, WorkCommentaryDTO.fromDTO(dto.getWork()), null, null);
   }
 
   public static CommentaryCreateDTO toDTO(Commentary commentary) {
@@ -41,5 +34,4 @@ public class CommentaryCreateDTO {
         .work(new WorkCommentaryDTO(commentary.getWork().getId()))
         .build();
   }
-
 }

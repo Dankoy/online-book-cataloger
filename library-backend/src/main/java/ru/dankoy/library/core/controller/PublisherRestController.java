@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +18,12 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.publisher.PublisherService;
 
-@SecurityRequirement(name="Bearer Authentication")
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class PublisherRestController {
 
   private final PublisherService publisherService;
-
 
   @GetMapping("/api/v1/publisher")
   public List<PublisherDTO> getAll() {
@@ -33,26 +31,24 @@ public class PublisherRestController {
     var found = publisherService.findAll();
 
     return found.stream().map(PublisherDTO::toDTO).collect(Collectors.toList());
-
   }
 
   @GetMapping("/api/v1/publisher/{id}")
   public PublisherDTO getById(@PathVariable String id) {
 
-    var found = publisherService.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.PUBLISHER));
+    var found =
+        publisherService
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(id, Entity.PUBLISHER));
 
     return PublisherDTO.toDTO(found);
-
   }
-
 
   @DeleteMapping("/api/v1/publisher/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public void delete(@PathVariable String id) {
 
     publisherService.deleteById(id);
-
   }
 
   @PostMapping("/api/v1/publisher")
@@ -62,21 +58,18 @@ public class PublisherRestController {
     var created = publisherService.create(toCreate);
 
     return PublisherDTO.toDTO(created);
-
   }
 
   @PutMapping("/api/v1/publisher/{id}")
   public PublisherDTO update(@PathVariable String id, @RequestBody PublisherDTO dto) {
 
-    publisherService.findById(id)
+    publisherService
+        .findById(id)
         .orElseThrow(() -> new EntityNotFoundException(id, Entity.PUBLISHER));
 
     var toUpdate = PublisherDTO.fromDTO(dto);
     var updated = publisherService.update(toUpdate);
 
     return PublisherDTO.toDTO(updated);
-
   }
-
-
 }

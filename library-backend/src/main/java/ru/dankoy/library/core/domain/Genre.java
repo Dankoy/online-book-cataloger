@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 // Вложенный в книги
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +17,4 @@ public class Genre {
 
   @Field("name")
   private String name;
-
 }

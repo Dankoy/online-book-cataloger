@@ -1,6 +1,5 @@
 package ru.dankoy.library.config.security.swagger;
 
-
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -15,21 +14,21 @@ import org.springframework.context.annotation.Configuration;
     name = "Bearer Authentication",
     type = SecuritySchemeType.HTTP,
     bearerFormat = "JWT",
-    scheme = "bearer"
-)
+    scheme = "bearer")
 public class SwaggerConfig {
 
   @Bean
   public OpenAPI springOpenAPI() {
     return new OpenAPI()
-        .info(new Info().title("SpringBoot API")
-            .description("SpringBoot sample application")
-            .version("v0.0.1")
-            .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-        .externalDocs(new ExternalDocumentation()
-            .description("SpringBoot Wiki Documentation")
-            .url("https://springboot.wiki.github.org/docs"));
+        .info(
+            new Info()
+                .title("SpringBoot API")
+                .description("SpringBoot sample application")
+                .version("v0.0.1")
+                .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+        .externalDocs(
+            new ExternalDocumentation()
+                .description("SpringBoot Wiki Documentation")
+                .url("https://springboot.wiki.github.org/docs"));
   }
-
-
 }

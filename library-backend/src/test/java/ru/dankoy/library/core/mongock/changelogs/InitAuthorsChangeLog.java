@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.mongock.changelogs;
 
-
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoCollection;
@@ -19,14 +18,13 @@ public class InitAuthorsChangeLog {
   @ChangeSet(order = "002", id = "insertAuthors", author = "dankoy")
   public void insertAuthors(MongoDatabase db) {
     MongoCollection<Document> myCollection = db.getCollection("authors");
-    List<Document> docs = List.of(
-        new Document().append("name", "author1"),
-        new Document().append("name", "author2"),
-        new Document().append("name", "author3"),
-        new Document().append("name", "'author_without_book'")
-    );
+    List<Document> docs =
+        List.of(
+            new Document().append("name", "author1"),
+            new Document().append("name", "author2"),
+            new Document().append("name", "author3"),
+            new Document().append("name", "'author_without_book'"));
 
     myCollection.insertMany(docs);
   }
-
 }

@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,8 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("editions")
 public class Edition {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @JsonBackReference
   @DocumentReference(collection = "works", lookup = "{ '_id' : ?#{#target} }")
@@ -76,6 +74,4 @@ public class Edition {
   @Field("modified_by")
   @LastModifiedBy
   private String modifiedByUser;
-
-
 }

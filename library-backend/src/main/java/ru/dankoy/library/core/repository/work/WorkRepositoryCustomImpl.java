@@ -22,7 +22,6 @@ import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.exceptions.Hw5RootException;
 import ru.dankoy.library.core.repository.commentary.CommentaryRepository;
 
-
 @RequiredArgsConstructor
 public class WorkRepositoryCustomImpl implements WorkRepositoryCustom {
 
@@ -32,12 +31,11 @@ public class WorkRepositoryCustomImpl implements WorkRepositoryCustom {
 
   @Override
   public List<Genre> getAllGenresByBookId(String bookId) {
-    var aggregation = newAggregation(
-        match(Criteria.where("id").is(bookId))
-        , unwind("genres")
-        , project().andExclude("_id")
-            .and("genres.name").as("name")
-    );
+    var aggregation =
+        newAggregation(
+            match(Criteria.where("id").is(bookId)),
+            unwind("genres"),
+            project().andExclude("_id").and("genres.name").as("name"));
 
     return mongoTemplate.aggregate(aggregation, Work.class, Genre.class).getMappedResults();
   }
@@ -48,20 +46,19 @@ public class WorkRepositoryCustomImpl implements WorkRepositoryCustom {
     Set<Author> authors = work.getAuthors();
 
     // проверяем, что авторы присутствуют в коллекции авторов
-    authors.forEach(author -> {
-      List<Author> found = mongoTemplate.find(new Query()
-              .addCriteria(Criteria
-                  .where("_id").is(author.getId())),
-          Author.class);
+    authors.forEach(
+        author -> {
+          List<Author> found =
+              mongoTemplate.find(
+                  new Query().addCriteria(Criteria.where("_id").is(author.getId())), Author.class);
 
-      if (found.isEmpty()) {
-        throw new EntityNotFoundException(author.getId(), Entity.AUTHOR);
-      }
-    });
+          if (found.isEmpty()) {
+            throw new EntityNotFoundException(author.getId(), Entity.AUTHOR);
+          }
+        });
 
     return mongoTemplate.save(work, "works");
   }
-
 
   @Override
   public void deleteByWorkId(String workId) {
@@ -70,26 +67,22 @@ public class WorkRepositoryCustomImpl implements WorkRepositoryCustom {
 
     var foundWork = Optional.ofNullable(mongoTemplate.findOne(query, Work.class));
 
-    foundWork.ifPresent(w -> {
+    foundWork.ifPresent(
+        w -> {
 
-      // Если есть издания, то удалять запрещено
-      if (!w.getEditions().isEmpty()) {
+          // Если есть издания, то удалять запрещено
+          if (!w.getEditions().isEmpty()) {
 
-        var editionsIds = w.getEditions().stream()
-            .map(Edition::getId)
-            .collect(Collectors.toSet());
+            var editionsIds =
+                w.getEditions().stream().map(Edition::getId).collect(Collectors.toSet());
 
-        throw new Hw5RootException(
-            String.format("Can't delete work, because editions require it. '%s'", editionsIds)
-        );
-      }
+            throw new Hw5RootException(
+                String.format("Can't delete work, because editions require it. '%s'", editionsIds));
+          }
 
-      // todo: сделать через mongoTemplate. избавиться от зависимости репы комментариев
-      commentaryRepository.deleteCommentariesByWorkId(workId);
-      mongoTemplate.remove(query, Work.class);
-
-    });
-
+          // todo: сделать через mongoTemplate. избавиться от зависимости репы комментариев
+          commentaryRepository.deleteCommentariesByWorkId(workId);
+          mongoTemplate.remove(query, Work.class);
+        });
   }
-
 }

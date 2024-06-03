@@ -10,8 +10,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
-//todo: использовать эти поля здесь, а не в доменных классах.
+// todo: использовать эти поля здесь, а не в доменных классах.
 
 @SuperBuilder
 @Getter
@@ -33,5 +32,4 @@ public class AuditMetadata {
   @Field("modified_by")
   @LastModifiedBy
   private String modifiedByUser;
-
 }

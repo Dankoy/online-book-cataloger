@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.mongock.changelogs;
 
-
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoCollection;
@@ -15,14 +14,13 @@ public class InitPublishersChangeLog {
   @ChangeSet(order = "001", id = "insertPublishers", author = "dankoy")
   public void insertPublishers(MongoDatabase db) {
     MongoCollection<Document> myCollection = db.getCollection("publishers");
-    List<Document> docs = List.of(
-        new Document()
-            .append("name", "Black Library")
-            .append("dt_created", LocalDateTime.now())
-            .append("dt_modified", null)
-    );
+    List<Document> docs =
+        List.of(
+            new Document()
+                .append("name", "Black Library")
+                .append("dt_created", LocalDateTime.now())
+                .append("dt_modified", null));
 
     myCollection.insertMany(docs);
   }
-
 }

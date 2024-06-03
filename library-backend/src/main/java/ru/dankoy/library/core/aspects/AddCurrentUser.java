@@ -7,11 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * @author turtality
- * <p>
- * Добавляет текущего юзера к объекту комментария
+ *     <p>Добавляет текущего юзера к объекту комментария
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AddCurrentUser {
-
-}
+public @interface AddCurrentUser {}

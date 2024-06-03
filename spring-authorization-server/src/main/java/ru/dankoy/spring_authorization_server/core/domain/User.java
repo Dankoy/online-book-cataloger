@@ -16,15 +16,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 @Document("users")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field(name = "username")
   private String username;
@@ -51,13 +49,13 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole()))
+    return roles.stream()
+        .map(r -> new SimpleGrantedAuthority(r.getRole()))
         .collect(Collectors.toSet());
   }
 
   public void addRole(UserRole role) {
 
     roles.add(role);
-
   }
 }

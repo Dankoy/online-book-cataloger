@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +18,12 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.note.NoteService;
 
-@SecurityRequirement(name="Bearer Authentication")
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class NoteRestController {
 
   private final NoteService noteService;
-
 
   @GetMapping("/api/v1/note")
   public List<NoteDTO> getAll() {
@@ -33,26 +31,22 @@ public class NoteRestController {
     var found = noteService.findAll();
 
     return found.stream().map(NoteDTO::toDTO).collect(Collectors.toList());
-
   }
 
   @GetMapping("/api/v1/note/{id}")
   public NoteDTO getById(@PathVariable String id) {
 
-    var found = noteService.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.NOTE));
+    var found =
+        noteService.findById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.NOTE));
 
     return NoteDTO.toDTO(found);
-
   }
-
 
   @DeleteMapping("/api/v1/note/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public void delete(@PathVariable String id) {
 
     noteService.deleteById(id);
-
   }
 
   @PostMapping("/api/v1/note")
@@ -62,35 +56,29 @@ public class NoteRestController {
     var created = noteService.create(toCreate);
 
     return NoteDTO.toDTO(created);
-
   }
 
   @PutMapping("/api/v1/note/{id}")
   public NoteDTO update(@PathVariable String id, @RequestBody NoteDTO dto) {
 
     // Проверка на существование полки по id и проверка принадлежности юзеру
-    noteService.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.NOTE));
+    noteService.findById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.NOTE));
 
     var toUpdate = NoteDTO.fromDTO(dto);
     var updated = noteService.update(toUpdate);
 
     return NoteDTO.toDTO(updated);
-
   }
 
-
   // Нужно ли оно вообще?
-  @GetMapping(value = "/api/v1/edition/{editionId}/note", produces= {"application/json"})
+  @GetMapping(
+      value = "/api/v1/edition/{editionId}/note",
+      produces = {"application/json"})
   public NoteDTO getByEdition(@PathVariable String editionId) {
 
     var note = noteService.findByEditionId(editionId);
 
     // Если объект не найден, то возвращает пустой json
-    return note.map(NoteDTO::toDTO)
-        .orElseGet(NoteDTO::new);
-
+    return note.map(NoteDTO::toDTO).orElseGet(NoteDTO::new);
   }
-
-
 }

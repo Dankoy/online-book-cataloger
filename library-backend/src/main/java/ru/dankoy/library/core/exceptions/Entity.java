@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.exceptions;
 
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,5 +16,4 @@ public enum Entity {
   EDITION("Edition");
 
   private final String name;
-
 }

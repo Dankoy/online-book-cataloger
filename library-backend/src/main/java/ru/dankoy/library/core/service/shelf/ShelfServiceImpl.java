@@ -22,9 +22,7 @@ public class ShelfServiceImpl implements ShelfService {
   @Override
   public Optional<Shelf> getById(String id) {
 
-    var user = (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     // костыльная секурность
     return shelfRepository.findByIdAndUserId(id, user.getId());
@@ -35,13 +33,10 @@ public class ShelfServiceImpl implements ShelfService {
 
     // удаляется только если у юзера найдена полка
     // Чужие полки удалить нельзя
-    var user = (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     var optionalShelf = shelfRepository.findByIdAndUserId(id, user.getId());
     optionalShelf.ifPresent(shelfRepository::delete);
-
   }
 
   @Override
@@ -49,7 +44,6 @@ public class ShelfServiceImpl implements ShelfService {
   @AddCreatedMetadata
   public Shelf create(Shelf shelf) {
     return shelfRepository.save(shelf);
-
   }
 
   @PostFilter(value = "filterObject.user.getId() == authentication.principal.id")

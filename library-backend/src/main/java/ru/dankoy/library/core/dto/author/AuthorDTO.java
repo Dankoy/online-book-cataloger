@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.author;
 
-
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +31,6 @@ public class AuthorDTO {
 
   private String modifiedByUser;
 
-
   public static AuthorDTO fromAuthor(Author author) {
 
     return builder()
@@ -45,7 +43,6 @@ public class AuthorDTO {
         .createdByUser(author.getCreatedByUser())
         .modifiedByUser(author.getModifiedByUser())
         .build();
-
   }
 
   public static Author fromDTO(AuthorDTO dto) {
@@ -58,9 +55,6 @@ public class AuthorDTO {
         dto.dateCreated,
         dto.dateModified,
         dto.createdByUser,
-        dto.modifiedByUser
-    );
-
+        dto.modifiedByUser);
   }
-
 }

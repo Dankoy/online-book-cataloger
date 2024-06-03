@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.note;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.time.LocalDateTime;
@@ -28,18 +27,9 @@ public class NoteDTO {
 
   private LocalDateTime dateModified;
 
-
   public static Note fromDTO(NoteDTO dto) {
 
-    return new Note(
-        dto.id,
-        null,
-        EditionDTO.fromDTO(dto.getEdition()),
-        dto.getText(),
-        null,
-        null
-    );
-
+    return new Note(dto.id, null, EditionDTO.fromDTO(dto.getEdition()), dto.getText(), null, null);
   }
 
   public static NoteDTO toDTO(Note note) {
@@ -51,8 +41,5 @@ public class NoteDTO {
         .dateCreated(note.getDateCreated())
         .dateModified(note.getDateModified())
         .build();
-
   }
-
-
 }

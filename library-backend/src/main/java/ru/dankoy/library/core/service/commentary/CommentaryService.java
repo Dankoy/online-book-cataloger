@@ -21,6 +21,4 @@ public interface CommentaryService {
   Commentary insert(Commentary commentary);
 
   void deleteById(String id);
-
-
 }

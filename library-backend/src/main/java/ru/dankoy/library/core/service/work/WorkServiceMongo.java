@@ -18,13 +18,11 @@ public class WorkServiceMongo implements WorkService {
 
   private final WorkRepository workRepository;
 
-
   //  @CircuitBreaker(name = "bookService", fallbackMethod = "fallbackListBooksByGenre")
   @Override
   public List<Work> findAllByGenreName(Genre genre) {
 
     return workRepository.findBookByGenres(genre.getName());
-
   }
 
   //  @CircuitBreaker(name = "bookService", fallbackMethod = "fallbackListBooksByAuthor")
@@ -32,7 +30,6 @@ public class WorkServiceMongo implements WorkService {
   public List<Work> findAllByAuthorId(Author author) {
 
     return workRepository.findBookByAuthorsId(author.getId());
-
   }
 
   //  @CircuitBreaker(name = "bookService", fallbackMethod = "fallbackListBooks")
@@ -47,20 +44,20 @@ public class WorkServiceMongo implements WorkService {
     return workRepository.findById(id);
   }
 
-//  @Retry(name = "bookService")
+  //  @Retry(name = "bookService")
   @Override
   public Work insert(Work work) {
     return workRepository.saveAndCheckAuthors(work);
   }
 
-//  @Retry(name = "bookService")
+  //  @Retry(name = "bookService")
   @Override
   @AddCreatedMetadata
   public Work update(Work work) {
     return workRepository.saveAndCheckAuthors(work);
   }
 
-//  @Retry(name = "bookService")
+  //  @Retry(name = "bookService")
   @Override
   public void deleteById(String id) {
     workRepository.deleteByWorkId(id);
@@ -72,11 +69,8 @@ public class WorkServiceMongo implements WorkService {
     return workRepository.count();
   }
 
-
   @Override
   public void updateMultiple(List<Work> works) {
     workRepository.saveAll(works);
   }
-
-
 }

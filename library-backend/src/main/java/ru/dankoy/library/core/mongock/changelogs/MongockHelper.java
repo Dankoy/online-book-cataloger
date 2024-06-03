@@ -8,13 +8,11 @@ import org.bson.Document;
 
 public interface MongockHelper {
 
-  static Document getDocumentByName(MongoDatabase db, String field, String nameValue,
-      String collectionName) {
+  static Document getDocumentByName(
+      MongoDatabase db, String field, String nameValue, String collectionName) {
 
     MongoCollection<Document> collection = db.getCollection(collectionName);
 
-    return collection.find(eq(field, nameValue))
-        .first();
-
+    return collection.find(eq(field, nameValue)).first();
   }
 }

@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.work;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +17,4 @@ public class WorkCommentaryDTO {
   public static Work fromDTO(WorkCommentaryDTO dto) {
     return new Work(dto.id);
   }
-
 }

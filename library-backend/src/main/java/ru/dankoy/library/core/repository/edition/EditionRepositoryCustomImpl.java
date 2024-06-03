@@ -22,36 +22,17 @@ public class EditionRepositoryCustomImpl implements EditionRepositoryCustom {
 
     // Удаляем из работы, полок и удаляем все заметки
 
-    var queryFindEdition = new Query()
-        .addCriteria(
-            Criteria
-                .where("_id")
-                .is(edition.getId())
-        );
+    var queryFindEdition = new Query().addCriteria(Criteria.where("_id").is(edition.getId()));
 
-    var queryFindAllNotes = new Query()
-        .addCriteria(
-            Criteria
-                .where("edition")
-                .is(edition)
-        );
+    var queryFindAllNotes = new Query().addCriteria(Criteria.where("edition").is(edition));
 
-    var queryFindAllShelves = new Query()
-        .addCriteria(
-            Criteria
-                .where(EDITIONS_FIELD_NAME)
-                .in(edition)
-        );
+    var queryFindAllShelves =
+        new Query().addCriteria(Criteria.where(EDITIONS_FIELD_NAME).in(edition));
 
-    var queryFindAllWorks = new Query()
-        .addCriteria(
-            Criteria
-                .where(EDITIONS_FIELD_NAME)
-                .in(edition)
-        );
+    var queryFindAllWorks =
+        new Query().addCriteria(Criteria.where(EDITIONS_FIELD_NAME).in(edition));
 
-    var queryPullFromEditions =
-        new Update().pull(EDITIONS_FIELD_NAME, edition);
+    var queryPullFromEditions = new Update().pull(EDITIONS_FIELD_NAME, edition);
 
     // удаление всех заметок
     mongoTemplate.findAllAndRemove(queryFindAllNotes, Note.class);
@@ -64,6 +45,5 @@ public class EditionRepositoryCustomImpl implements EditionRepositoryCustom {
 
     // удаление издания
     mongoTemplate.findAndRemove(queryFindEdition, Edition.class);
-
   }
 }

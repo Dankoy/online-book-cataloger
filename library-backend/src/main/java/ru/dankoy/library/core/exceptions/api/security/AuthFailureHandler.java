@@ -5,10 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +28,8 @@ public class AuthFailureHandler {
     List<String> details = new ArrayList<>();
     details.add(ex.getMessage());
 
-    ApiError apiResponse = new ApiError(LocalDateTime.now(),
-        HttpStatus.FORBIDDEN,
-        "Access Denied",
-        details);
+    ApiError apiResponse =
+        new ApiError(LocalDateTime.now(), HttpStatus.FORBIDDEN, "Access Denied", details);
 
     try {
       var responseBody = mapper.writeValueAsString(apiResponse);
@@ -41,10 +37,8 @@ public class AuthFailureHandler {
       response.getWriter().write(responseBody);
 
     } catch (JsonProcessingException jsonProcessingException) {
-      log.error("Json parsing error - {}", jsonProcessingException.getMessage(), jsonProcessingException);
+      log.error(
+          "Json parsing error - {}", jsonProcessingException.getMessage(), jsonProcessingException);
     }
-
-
   }
-
 }

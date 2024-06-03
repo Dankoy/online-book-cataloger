@@ -16,7 +16,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,8 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @JsonInclude(Include.NON_EMPTY)
 public class Author {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("name")
   private String name;
@@ -57,5 +55,4 @@ public class Author {
   public Author(String id) {
     this.id = id;
   }
-
 }

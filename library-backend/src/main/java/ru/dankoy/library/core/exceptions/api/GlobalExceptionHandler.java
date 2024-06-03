@@ -26,13 +26,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     details.add(ex.getMessage());
 
     ApiError err =
-        new ApiError(LocalDateTime.now(), HttpStatus.NOT_FOUND, "Entity not found",
-            details);
+        new ApiError(LocalDateTime.now(), HttpStatus.NOT_FOUND, "Entity not found", details);
 
     return ResponseEntityBuilder.build(err);
-
   }
-
 
   @Override
   public ResponseEntity<Object> handleHttpMessageNotReadable(

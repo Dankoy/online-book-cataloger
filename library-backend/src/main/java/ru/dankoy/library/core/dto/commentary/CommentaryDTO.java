@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.dto.commentary;
 
-
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import lombok.ToString;
 import ru.dankoy.library.core.domain.Commentary;
 import ru.dankoy.library.core.dto.user.UserDTO;
 import ru.dankoy.library.core.dto.work.WorkCommentaryDTO;
-
 
 @ToString
 @Getter
@@ -32,7 +30,8 @@ public class CommentaryDTO {
   private LocalDateTime dateModified;
 
   public static Commentary toCommentary(CommentaryDTO dto) {
-    return new Commentary(dto.getId(),
+    return new Commentary(
+        dto.getId(),
         dto.getText(),
         UserDTO.fromDTO(dto.getUser()),
         WorkCommentaryDTO.fromDTO(dto.getWork()),
@@ -50,5 +49,4 @@ public class CommentaryDTO {
         .dateModified(commentary.getDateModified())
         .build();
   }
-
 }

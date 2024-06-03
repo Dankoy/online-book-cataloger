@@ -36,8 +36,7 @@ public class WorkDTO {
 
   private Set<Genre> genres;
 
-  @Setter
-  private Set<CommentaryDTO> commentaries;
+  @Setter private Set<CommentaryDTO> commentaries;
 
   private Set<EditionDTO> editions = new HashSet<>();
 
@@ -48,7 +47,6 @@ public class WorkDTO {
   private String createBy;
 
   private String modifiedBy;
-
 
   public static WorkDTO toDTOWithoutCommentaries(Work work) {
 
@@ -65,7 +63,6 @@ public class WorkDTO {
         .authors(work.getAuthors())
         .commentaries(new HashSet<>())
         .build();
-
   }
 
   public static WorkDTO toSimpleDTO(Work work) {
@@ -82,7 +79,6 @@ public class WorkDTO {
         .authors(new HashSet<>())
         .commentaries(new HashSet<>())
         .build();
-
   }
 
   public static WorkDTO toDTOWithCommentaries(Work work) {
@@ -99,21 +95,19 @@ public class WorkDTO {
         .createBy(work.getCreatedByUser())
         .modifiedBy(work.getModifiedByUser())
         .build();
-
   }
-
 
   public static Work toWork(WorkDTO dto) {
 
-//    Work.builder()
-//        .id(dto.getId())
-//        .name(dto.getName())
-//        .description(dto.getDescription())
-//        .genres(dto.getGenres())
-//        .authors(dto.getAuthors())
-//        .editions(editionMapper.fromSetDto(dto.getEditions()))
-//        .
-//        .build();
+    //    Work.builder()
+    //        .id(dto.getId())
+    //        .name(dto.getName())
+    //        .description(dto.getDescription())
+    //        .genres(dto.getGenres())
+    //        .authors(dto.getAuthors())
+    //        .editions(editionMapper.fromSetDto(dto.getEditions()))
+    //        .
+    //        .build();
 
     return new Work(
         dto.getId(),
@@ -125,9 +119,6 @@ public class WorkDTO {
         dto.getDateCreated(),
         dto.getDateModified(),
         dto.getCreateBy(),
-        dto.getModifiedBy()
-    );
-
+        dto.getModifiedBy());
   }
-
 }

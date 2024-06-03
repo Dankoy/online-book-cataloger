@@ -1,13 +1,11 @@
 package ru.dankoy.library.core.dto.publisher;
 
-
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.dankoy.library.core.domain.Publisher;
-
 
 @Builder
 @NoArgsConstructor
@@ -27,7 +25,6 @@ public class PublisherDTO {
 
   private String modifiedByUser;
 
-
   public static PublisherDTO toDTO(Publisher publisher) {
 
     return PublisherDTO.builder()
@@ -38,7 +35,6 @@ public class PublisherDTO {
         .createdByUser(publisher.getCreatedByUser())
         .modifiedByUser(publisher.getModifiedByUser())
         .build();
-
   }
 
   public static Publisher fromDTO(PublisherDTO dto) {
@@ -49,9 +45,6 @@ public class PublisherDTO {
         dto.getDateCreated(),
         dto.getDateModified(),
         dto.getCreatedByUser(),
-        dto.getModifiedByUser()
-    );
-
+        dto.getModifiedByUser());
   }
-
 }

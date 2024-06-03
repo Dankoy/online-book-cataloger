@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.edition.EditionService;
 
-@SecurityRequirement(name="Bearer Authentication")
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class EditionRestController {
@@ -29,20 +28,19 @@ public class EditionRestController {
   @GetMapping("/api/v1/edition/{id}")
   public EditionDTO getById(@PathVariable String id) {
 
-    var found = editionService.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.EDITION));
+    var found =
+        editionService
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(id, Entity.EDITION));
 
     return EditionDTO.toDTO(found);
-
   }
-
 
   @DeleteMapping("/api/v1/edition/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public void delete(@PathVariable String id) {
 
     editionService.deleteById(id);
-
   }
 
   @PostMapping("/api/v1/work/{workId}/edition")
@@ -54,7 +52,6 @@ public class EditionRestController {
     var created = editionService.create(toCreate);
 
     return EditionDTO.toDTO(created);
-
   }
 
   @GetMapping("/api/v1/work/{workId}/edition")
@@ -63,21 +60,16 @@ public class EditionRestController {
     var found = editionService.findAllByWorkId(workId);
 
     return found.stream().map(EditionDTO::toDTO).collect(Collectors.toSet());
-
   }
 
   @PutMapping("/api/v1/edition/{id}")
   public EditionDTO update(@PathVariable String id, @RequestBody EditionDTO dto) {
 
-    editionService.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.EDITION));
+    editionService.findById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.EDITION));
 
     var toUpdate = EditionDTO.fromDTO(dto);
     var updated = editionService.update(toUpdate);
 
     return EditionDTO.toDTO(updated);
-
   }
-
-
 }

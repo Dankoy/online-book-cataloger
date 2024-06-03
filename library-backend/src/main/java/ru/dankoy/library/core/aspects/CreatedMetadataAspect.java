@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.aspects;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,11 +35,11 @@ public class CreatedMetadataAspect {
 
     var found = workService.getById(work.getId());
 
-    found.ifPresent(w -> {
-      work.setCreatedByUser(w.getCreatedByUser());
-      work.setDateCreated(w.getDateCreated());
-    });
-
+    found.ifPresent(
+        w -> {
+          work.setCreatedByUser(w.getCreatedByUser());
+          work.setDateCreated(w.getDateCreated());
+        });
   }
 
   @Before("@annotation(ru.dankoy.library.core.aspects.AddCreatedMetadata) && args(publisher)")
@@ -50,11 +49,11 @@ public class CreatedMetadataAspect {
 
     var found = publisherService.findById(publisher.getId());
 
-    found.ifPresent(w -> {
-      publisher.setCreatedByUser(w.getCreatedByUser());
-      publisher.setDateCreated(w.getDateCreated());
-    });
-
+    found.ifPresent(
+        w -> {
+          publisher.setCreatedByUser(w.getCreatedByUser());
+          publisher.setDateCreated(w.getDateCreated());
+        });
   }
 
   @Before("@annotation(ru.dankoy.library.core.aspects.AddCreatedMetadata) && args(shelf)")
@@ -65,7 +64,6 @@ public class CreatedMetadataAspect {
     var found = shelfService.getById(shelf.getId());
 
     found.ifPresent(w -> shelf.setDateCreated(w.getDateCreated()));
-
   }
 
   @Before("@annotation(ru.dankoy.library.core.aspects.AddCreatedMetadata) && args(commentary)")
@@ -76,7 +74,6 @@ public class CreatedMetadataAspect {
     var found = commentaryService.getById(commentary.getId());
 
     found.ifPresent(w -> commentary.setDateCreated(w.getDateCreated()));
-
   }
 
   @Before("@annotation(ru.dankoy.library.core.aspects.AddCreatedMetadata) && args(note)")
@@ -87,7 +84,5 @@ public class CreatedMetadataAspect {
     var found = noteService.findById(note.getId());
 
     found.ifPresent(w -> note.setDateCreated(w.getDateCreated()));
-
   }
-
 }

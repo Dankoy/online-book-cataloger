@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.domain;
 
-
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @ToString
 @EqualsAndHashCode
 @Getter
@@ -24,8 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("notes")
 public class Note {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Setter
   @DocumentReference(lookup = "{ '_id' : ?#{#target} }")
@@ -48,5 +45,4 @@ public class Note {
   @Field("dt_modified")
   @LastModifiedDate
   private LocalDateTime dateModified;
-
 }

@@ -15,5 +15,4 @@ public interface EditionService {
   void deleteById(String id);
 
   Edition update(Edition edition);
-
 }

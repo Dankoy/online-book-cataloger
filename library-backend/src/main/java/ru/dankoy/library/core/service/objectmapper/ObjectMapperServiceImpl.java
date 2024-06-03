@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 import ru.dankoy.library.core.exceptions.ObjectMapperException;
 
-
 @Service
 public class ObjectMapperServiceImpl implements ObjectMapperService {
 
@@ -25,5 +24,4 @@ public class ObjectMapperServiceImpl implements ObjectMapperService {
           String.format("Couldn't convert object of type '%s' to string", object.getClass()), e);
     }
   }
-
 }

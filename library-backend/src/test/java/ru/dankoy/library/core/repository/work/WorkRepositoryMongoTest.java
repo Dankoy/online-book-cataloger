@@ -1,8 +1,6 @@
 package ru.dankoy.library.core.repository.work;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,21 +9,15 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import ru.dankoy.library.core.domain.Author;
 import ru.dankoy.library.core.domain.Work;
-import ru.dankoy.library.core.exceptions.EntityNotFoundException;
-
 
 @DisplayName("Test BookRepositoryMongo ")
 @DataMongoTest
 class WorkRepositoryMongoTest {
 
-  @Autowired
-  private WorkRepository workRepository;
+  @Autowired private WorkRepository workRepository;
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
-
+  @Autowired private MongoTemplate mongoTemplate;
 
   @DisplayName("should return all books by genre name")
   @Test
@@ -53,57 +45,56 @@ class WorkRepositoryMongoTest {
     assertThat(books).isEqualTo(booksExpected);
   }
 
-
   @DisplayName("should return no books by genre name")
   @Test
   void shouldGetAllGenresByBookIdTest() {
 
-    var book1 = mongoTemplate.find(
-            new Query().addCriteria(Criteria.where("name").is("book1")),
-            Work.class)
-        .get(0);
+    var book1 =
+        mongoTemplate
+            .find(new Query().addCriteria(Criteria.where("name").is("book1")), Work.class)
+            .get(0);
 
     var genres = workRepository.getAllGenresByBookId(book1.getId());
 
     assertThat(genres).containsExactlyInAnyOrderElementsOf(book1.getGenres());
   }
 
-//
-//  @DisplayName("should correctly save book")
-//  @Test
-//  void shouldCorrectlySaveBook() {
-//
-//    var author = mongoTemplate.find(
-//            new Query().addCriteria(Criteria.where("name").is("author1")),
-//            Author.class
-//        )
-//        .get(0);
-//    var book = new Work(null, "mybookname", "descr", Set.of(author), new HashSet<>(),  null,
-//        null, null);
-//
-//    var inserted = workRepository.saveAndCheckAuthors(book);
-//
-//    var expected = mongoTemplate.find(
-//        new Query().addCriteria(Criteria.where("name").is("mybookname")),
-//        Work.class
-//    ).get(0);
-//
-//    assertThat(inserted).isEqualTo(expected);
-//
-//  }
-//
-//
-//  @DisplayName("should throw exception when save book with non existing author")
-//  @Test
-//  void shouldThrowExceptionWhenSaveBookWithNonExistingAuthor() {
-//
-//    var author = new Author("blah", "blah", null, null, null, null);
-//    var book = new Work(null, "mybookname", "descr", Set.of(author), new HashSet<>(),  null,
-//        null, null);
-//
-//    assertThatThrownBy(() -> workRepository.saveAndCheckAuthors(book))
-//        .isInstanceOf(EntityNotFoundException.class);
-//
-//  }
+  //
+  //  @DisplayName("should correctly save book")
+  //  @Test
+  //  void shouldCorrectlySaveBook() {
+  //
+  //    var author = mongoTemplate.find(
+  //            new Query().addCriteria(Criteria.where("name").is("author1")),
+  //            Author.class
+  //        )
+  //        .get(0);
+  //    var book = new Work(null, "mybookname", "descr", Set.of(author), new HashSet<>(),  null,
+  //        null, null);
+  //
+  //    var inserted = workRepository.saveAndCheckAuthors(book);
+  //
+  //    var expected = mongoTemplate.find(
+  //        new Query().addCriteria(Criteria.where("name").is("mybookname")),
+  //        Work.class
+  //    ).get(0);
+  //
+  //    assertThat(inserted).isEqualTo(expected);
+  //
+  //  }
+  //
+  //
+  //  @DisplayName("should throw exception when save book with non existing author")
+  //  @Test
+  //  void shouldThrowExceptionWhenSaveBookWithNonExistingAuthor() {
+  //
+  //    var author = new Author("blah", "blah", null, null, null, null);
+  //    var book = new Work(null, "mybookname", "descr", Set.of(author), new HashSet<>(),  null,
+  //        null, null);
+  //
+  //    assertThatThrownBy(() -> workRepository.saveAndCheckAuthors(book))
+  //        .isInstanceOf(EntityNotFoundException.class);
+  //
+  //  }
 
 }

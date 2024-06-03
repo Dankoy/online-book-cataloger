@@ -13,7 +13,6 @@ import ru.dankoy.library.core.domain.Note;
 import ru.dankoy.library.core.domain.User;
 import ru.dankoy.library.core.repository.note.NoteRepository;
 
-
 @Service
 @RequiredArgsConstructor
 public class NoteServiceImpl implements NoteService {
@@ -29,26 +28,19 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public Optional<Note> findById(String noteId) {
 
-    var user = (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     return noteRepository.findByIdAndUserId(noteId, user.getId());
-
   }
 
   @Override
   public void deleteById(String noteId) {
 
-    var user = (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     var optionalNote = noteRepository.findByIdAndUserId(noteId, user.getId());
     optionalNote.ifPresent(noteRepository::delete);
-
   }
-
 
   @Override
   @AddCurrentUser
@@ -66,9 +58,7 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public Optional<Note> findByEditionId(String editionId) {
 
-    var user = (User) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     return noteRepository.findAllByUserIdAndEditionId(user.getId(), editionId);
   }

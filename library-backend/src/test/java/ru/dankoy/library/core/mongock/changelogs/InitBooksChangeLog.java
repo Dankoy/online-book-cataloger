@@ -22,31 +22,27 @@ public class InitBooksChangeLog {
     var author2 = getDocumentByName(db, "author2", "authors");
 
     MongoCollection<Document> books = db.getCollection("books");
-    List<Document> docs = List.of(
-        new Document().append("name", "book1")
-            .append("genres", List.of(
-                new Document().append("name", "genre1"),
-                new Document().append("name", "genre2")
-            ))
-            .append("authors", List.of(author1.get("_id"), author2.get("_id")))
-            .append("commentaries", new HashSet<>())
-    );
+    List<Document> docs =
+        List.of(
+            new Document()
+                .append("name", "book1")
+                .append(
+                    "genres",
+                    List.of(
+                        new Document().append("name", "genre1"),
+                        new Document().append("name", "genre2")))
+                .append("authors", List.of(author1.get("_id"), author2.get("_id")))
+                .append("commentaries", new HashSet<>()));
 
     books.insertMany(docs);
   }
-
 
   private Document getDocumentByName(MongoDatabase db, String genreName, String collectionName) {
 
     MongoCollection<Document> genres = db.getCollection(collectionName);
 
-    Bson projectionFields = Projections.fields(
-        Projections.include("name"));
+    Bson projectionFields = Projections.fields(Projections.include("name"));
 
-    return genres.find(eq("name", genreName))
-        .projection(projectionFields)
-        .first();
-
+    return genres.find(eq("name", genreName)).projection(projectionFields).first();
   }
-
 }

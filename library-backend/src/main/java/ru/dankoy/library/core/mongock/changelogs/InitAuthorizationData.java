@@ -11,10 +11,10 @@ import org.bson.Document;
 @ChangeLog(order = "001")
 public class InitAuthorizationData {
 
-//  @ChangeSet(order = "001", id = "dropDb", author = "dankoy", runAlways = true)
-//  public void dropDb(MongoDatabase db) {
-//    db.drop();
-//  }
+  //  @ChangeSet(order = "001", id = "dropDb", author = "dankoy", runAlways = true)
+  //  public void dropDb(MongoDatabase db) {
+  //    db.drop();
+  //  }
 
   @ChangeSet(order = "002", id = "insertRoles", author = "dankoy")
   public void insertRoles(MongoDatabase db) {
@@ -26,9 +26,7 @@ public class InitAuthorizationData {
     var roleOperator = new Document().append("role", "ROLE_OPERATOR");
 
     roles.insertMany(List.of(roleAdmin, roleReader, roleOperator));
-
   }
-
 
   @ChangeSet(order = "003", id = "insertUsers", author = "dankoy")
   public void insertUsers(MongoDatabase db) {
@@ -41,44 +39,46 @@ public class InitAuthorizationData {
     var roleOperator = MongockHelper.getDocumentByName(db, "role", "ROLE_OPERATOR", "roles");
     var roleReader = MongockHelper.getDocumentByName(db, "role", "ROLE_READER", "roles");
 
-    var userAdmin = new Document()
-        .append("username", "admin")
-        .append("password", passwordHash)
-        .append("enabled", true)
-        .append("account_non_locked", true)
-        .append("account_non_expired", true)
-        .append("credentials_non_expired", true)
-        .append("roles", Set.of(roleAdmin.get("_id")));
+    var userAdmin =
+        new Document()
+            .append("username", "admin")
+            .append("password", passwordHash)
+            .append("enabled", true)
+            .append("account_non_locked", true)
+            .append("account_non_expired", true)
+            .append("credentials_non_expired", true)
+            .append("roles", Set.of(roleAdmin.get("_id")));
 
-    var userOperator = new Document()
-        .append("username", "operator")
-        .append("password", passwordHash)
-        .append("enabled", true)
-        .append("account_non_locked", true)
-        .append("account_non_expired", true)
-        .append("credentials_non_expired", true)
-        .append("roles", Set.of(roleOperator.get("_id")));
+    var userOperator =
+        new Document()
+            .append("username", "operator")
+            .append("password", passwordHash)
+            .append("enabled", true)
+            .append("account_non_locked", true)
+            .append("account_non_expired", true)
+            .append("credentials_non_expired", true)
+            .append("roles", Set.of(roleOperator.get("_id")));
 
-    var userReader = new Document()
-        .append("username", "reader")
-        .append("password", passwordHash)
-        .append("enabled", true)
-        .append("account_non_locked", true)
-        .append("account_non_expired", true)
-        .append("credentials_non_expired", true)
-        .append("roles", Set.of(roleReader.get("_id")));
+    var userReader =
+        new Document()
+            .append("username", "reader")
+            .append("password", passwordHash)
+            .append("enabled", true)
+            .append("account_non_locked", true)
+            .append("account_non_expired", true)
+            .append("credentials_non_expired", true)
+            .append("roles", Set.of(roleReader.get("_id")));
 
-    var userTurtle = new Document()
-        .append("username", "turtle")
-        .append("password", passwordHash)
-        .append("enabled", true)
-        .append("account_non_locked", true)
-        .append("account_non_expired", true)
-        .append("credentials_non_expired", true)
-        .append("roles", Set.of(roleOperator.get("_id")));
+    var userTurtle =
+        new Document()
+            .append("username", "turtle")
+            .append("password", passwordHash)
+            .append("enabled", true)
+            .append("account_non_locked", true)
+            .append("account_non_expired", true)
+            .append("credentials_non_expired", true)
+            .append("roles", Set.of(roleOperator.get("_id")));
 
     users.insertMany(List.of(userAdmin, userOperator, userReader, userTurtle));
-
   }
-
 }

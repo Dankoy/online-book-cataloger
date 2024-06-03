@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.domain;
 
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,8 +25,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("shelves")
 public class Shelf {
 
-  @Id
-  private String id;
+  @Id private String id;
 
   @Field("name")
   private String name;
@@ -50,6 +47,4 @@ public class Shelf {
   @LastModifiedDate
   @Field("dt_modified")
   private LocalDateTime dateModified;
-
-
 }

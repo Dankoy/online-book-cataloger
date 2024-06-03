@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +13,17 @@ import ru.dankoy.library.core.domain.Genre;
 import ru.dankoy.library.core.dto.genre.GenreDTO;
 import ru.dankoy.library.core.service.genre.GenreService;
 
-@SecurityRequirement(name="Bearer Authentication")
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class GenreRestController {
 
   private final GenreService genreService;
 
-
   @GetMapping("/api/v1/genre")
   public Set<Genre> getAll() {
 
     return genreService.getAllGenres();
-
   }
 
   @DeleteMapping("/api/v1/genre")
@@ -34,7 +31,6 @@ public class GenreRestController {
 
     var genre = GenreDTO.fromDTO(dto);
     genreService.delete(genre);
-
   }
 
   @PutMapping("/api/v1/genre")
@@ -45,5 +41,4 @@ public class GenreRestController {
 
     genreService.update(old, newGenre);
   }
-
 }

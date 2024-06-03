@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.repository.commentary;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -16,22 +15,18 @@ import ru.dankoy.library.core.domain.Work;
 @DataMongoTest
 class CommentaryRepositoryTest {
 
+  @Autowired private CommentaryRepository commentaryRepository;
 
-  @Autowired
-  private CommentaryRepository commentaryRepository;
-
-  @Autowired
-  private MongoTemplate mongoTemplate;
-
+  @Autowired private MongoTemplate mongoTemplate;
 
   @DisplayName(" should deleteByBookId all commentaries by book id")
   @Test
   void deleteDeleteAllCommentariesByBookId() {
 
-    var book1 = mongoTemplate.find(
-            new Query().addCriteria(Criteria.where("name").is("book1")),
-            Work.class)
-        .get(0);
+    var book1 =
+        mongoTemplate
+            .find(new Query().addCriteria(Criteria.where("name").is("book1")), Work.class)
+            .get(0);
 
     var commentariesBeforeDelete = commentaryRepository.findAllByWorkId(book1.getId());
     assertThat(commentariesBeforeDelete).hasSize(3);
@@ -40,9 +35,5 @@ class CommentaryRepositoryTest {
 
     var commentariesAfterDelete = commentaryRepository.findAllByWorkId(book1.getId());
     assertThat(commentariesAfterDelete).isEmpty();
-
-
   }
-
-
 }

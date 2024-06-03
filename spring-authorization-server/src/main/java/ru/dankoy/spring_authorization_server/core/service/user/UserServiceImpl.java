@@ -9,7 +9,6 @@ import ru.dankoy.spring_authorization_server.core.domain.User;
 import ru.dankoy.spring_authorization_server.core.exceptions.RegistrationException;
 import ru.dankoy.spring_authorization_server.core.repository.user.UserRepository;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -19,10 +18,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByUsername(username)
+    return userRepository
+        .findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException(username));
   }
-
 
   @Override
   public void create(User user) {
@@ -36,6 +35,5 @@ public class UserServiceImpl implements UserService {
       throw new RegistrationException(
           String.format("User with login '%s' already exists", user.getUsername()));
     }
-
   }
 }

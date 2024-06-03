@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.service.objectmapper;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,16 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.dankoy.library.core.exceptions.ObjectMapperException;
 
-
 @DisplayName("Test ObjectMapperService ")
 @SpringBootTest(classes = {ObjectMapper.class, ObjectMapperServiceImpl.class})
 class ObjectMapperServiceImplTest {
 
-  @MockBean
-  private ObjectMapper mapper;
-  @Autowired
-  private ObjectMapperServiceImpl objectMapperService;
-
+  @MockBean private ObjectMapper mapper;
+  @Autowired private ObjectMapperServiceImpl objectMapperService;
 
   @DisplayName("should correctly convert object to json")
   @Test
@@ -40,9 +35,7 @@ class ObjectMapperServiceImplTest {
 
     assertThat(actual).isEqualTo(correctMappedObj);
     Mockito.verify(mapper, times(1)).writeValueAsString(any());
-
   }
-
 
   @DisplayName("should throw ObjectMapperException")
   @Test
@@ -50,8 +43,8 @@ class ObjectMapperServiceImplTest {
 
     var objectToMap = new Object();
 
-    var exceptionMessage = String.format("Couldn't convert object of type '%s' to string",
-        objectToMap.getClass());
+    var exceptionMessage =
+        String.format("Couldn't convert object of type '%s' to string", objectToMap.getClass());
 
     Mockito.doThrow(new RuntimeException("msg")).when(mapper).writeValueAsString(any());
 
@@ -60,7 +53,5 @@ class ObjectMapperServiceImplTest {
         .hasMessage(exceptionMessage);
 
     Mockito.verify(mapper, times(1)).writeValueAsString(any());
-
   }
-
 }

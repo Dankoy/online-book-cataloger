@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +18,12 @@ import ru.dankoy.library.core.exceptions.Entity;
 import ru.dankoy.library.core.exceptions.EntityNotFoundException;
 import ru.dankoy.library.core.service.shelf.ShelfService;
 
-@SecurityRequirement(name="Bearer Authentication")
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RestController
 public class ShelfRestController {
 
   private final ShelfService shelfService;
-
 
   @GetMapping("/api/v1/shelf")
   public List<ShelfDTO> getAll() {
@@ -33,26 +31,22 @@ public class ShelfRestController {
     var found = shelfService.findAll();
 
     return found.stream().map(ShelfDTO::toDTO).collect(Collectors.toList());
-
   }
 
   @GetMapping("/api/v1/shelf/{id}")
   public ShelfDTO getById(@PathVariable String id) {
 
-    var found = shelfService.getById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.SHELF));
+    var found =
+        shelfService.getById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.SHELF));
 
     return ShelfDTO.toDTO(found);
-
   }
-
 
   @DeleteMapping("/api/v1/shelf/{id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   public void delete(@PathVariable String id) {
 
     shelfService.deleteById(id);
-
   }
 
   @PostMapping("/api/v1/shelf")
@@ -62,22 +56,17 @@ public class ShelfRestController {
     var created = shelfService.create(toCreate);
 
     return ShelfDTO.toDTO(created);
-
   }
 
   @PutMapping("/api/v1/shelf/{id}")
   public ShelfDTO update(@PathVariable String id, @RequestBody ShelfDTO dto) {
 
     // Проверка на существование полки по id и проверка принадлежности юзеру
-    shelfService.getById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.SHELF));
+    shelfService.getById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.SHELF));
 
     var toUpdate = ShelfDTO.fromDTO(dto);
     var updated = shelfService.update(toUpdate);
 
     return ShelfDTO.toDTO(updated);
-
   }
-
-
 }

@@ -17,11 +17,9 @@ import ru.dankoy.library.core.domain.Work;
 @AllArgsConstructor
 public class EditionDTO {
 
-  @Id
-  private String id;
+  @Id private String id;
 
-  @Setter
-  private String workId;
+  @Setter private String workId;
 
   private String name;
 
@@ -65,8 +63,7 @@ public class EditionDTO {
         dto.getDateCreated(),
         dto.getDateModified(),
         dto.getCreatedByUser(),
-        dto.getModifiedByUser()
-    );
+        dto.getModifiedByUser());
   }
 
   public static EditionDTO toDTO(Edition edition) {
@@ -88,5 +85,4 @@ public class EditionDTO {
         .workId(edition.getWork().getId())
         .build();
   }
-
 }

@@ -15,5 +15,4 @@ public interface AuthorService {
   void deleteById(String id);
 
   long count();
-
 }

@@ -1,6 +1,5 @@
 package ru.dankoy.library.core.controller;
 
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,33 +29,27 @@ public class AuthorRestController {
 
     var authors = authorService.getAll();
 
-    return authors.stream()
-        .map(AuthorDTO::fromAuthor)
-        .collect(Collectors.toList());
-
+    return authors.stream().map(AuthorDTO::fromAuthor).collect(Collectors.toList());
   }
 
   @GetMapping("/api/v1/author/{id}")
   public AuthorDTO getAuthorById(@PathVariable String id) {
 
-    var author = authorService.getById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.AUTHOR));
+    var author =
+        authorService.getById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.AUTHOR));
 
     return AuthorDTO.fromAuthor(author);
-
   }
 
   @PutMapping("/api/v1/author/{id}")
   public AuthorDTO updateAuthor(@PathVariable String id, @RequestBody AuthorDTO dto) {
 
-    authorService.getById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Entity.AUTHOR));
+    authorService.getById(id).orElseThrow(() -> new EntityNotFoundException(id, Entity.AUTHOR));
 
     var fromDto = AuthorDTO.fromDTO(dto);
     var updated = authorService.insertOrUpdate(fromDto);
 
     return AuthorDTO.fromAuthor(updated);
-
   }
 
   @PostMapping("/api/v1/author")
@@ -66,14 +59,11 @@ public class AuthorRestController {
     var created = authorService.insertOrUpdate(fromDto);
 
     return AuthorDTO.fromAuthor(created);
-
   }
 
   @DeleteMapping("/api/v1/author/{id}")
   public void createAuthor(@PathVariable String id) {
 
     authorService.deleteById(id);
-
   }
-
 }
