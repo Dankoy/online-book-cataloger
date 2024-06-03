@@ -26,24 +26,6 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      <exclusions> <!-- конфликты внутри самой либы-->
-        <!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
-        <!--          <groupId>com.netflix.servo</groupId>-->
-        <!--          <artifactId>servo-core</artifactId>-->
-        <!--        </exclusion>-->
-        <exclusion>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <!--    взамен той что убрал эксклюдом-->
-    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>33.2.0-jre</version>
     </dependency>
 
     <dependency>
@@ -51,11 +33,6 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-configuration-processor</artifactId>-->
-    <!--      <optional>true</optional>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -117,11 +94,6 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-starter-data-rest</artifactId>-->
-    <!--    </dependency>-->
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -131,12 +103,18 @@
     <dependency>
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
-      <!--      <version>2.9.0</version>-->
     </dependency>
 
+
+    <!--    spring data rest + hal -->
     <!--    <dependency>-->
     <!--      <groupId>org.springframework.data</groupId>-->
     <!--      <artifactId>spring-data-rest-hal-explorer</artifactId>-->
+    <!--    </dependency>-->
+
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-starter-data-rest</artifactId>-->
     <!--    </dependency>-->
 
     <dependency>
@@ -161,64 +139,12 @@
       <artifactId>spring-security-test</artifactId>
     </dependency>
 
-    <!-- resilence dependencies   -->
-    <!-- не работает. конфликт с spring cloud -->
-    <!-- https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-bom -->
-    <!--    <dependency>-->
-    <!--      <groupId>io.github.resilience4j</groupId>-->
-    <!--      <artifactId>resilience4j-bom</artifactId>-->
-    <!--      <version>${resilience4j.version}</version>-->
-    <!--      <type>pom</type>-->
-    <!--    </dependency>-->
-
-    <!--    <dependency>-->
-    <!--      <groupId>io.github.resilience4j</groupId>-->
-    <!--      <artifactId>resilience4j-spring-boot2</artifactId>-->
-    <!--      <version>${resilience4j.version}</version>-->
-    <!--    </dependency>-->
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
 
-    <!-- resilence dependencies   -->
-
   </dependencies>
-
-
-  <!--  <profiles>-->
-  <!--    <profile>-->
-  <!--      <id>backend</id>-->
-  <!--      <build>-->
-  <!--        <plugins>-->
-  <!--          <plugin>-->
-  <!--            <groupId>com.github.eirslett</groupId>-->
-  <!--            <artifactId>frontend-maven-plugin</artifactId>-->
-  <!--            <version>1.12.1</version>-->
-  <!--            <executions>-->
-  <!--              <execution>-->
-  <!--                <id>install node and npm-->
-  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-  <!--              </execution>-->
-  <!--              <execution>-->
-  <!--                <id>npm install-->
-  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-  <!--              </execution>-->
-  <!--              <execution>-->
-  <!--                <id>npm run build-->
-  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
-  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
-  <!--              </execution>-->
-  <!--            </executions>-->
-  <!--          </plugin>-->
-  <!--        </plugins>-->
-  <!--      </build>-->
-  <!--    </profile>-->
-  <!--  </profiles>-->
-
 
   <build>
     <plugins>

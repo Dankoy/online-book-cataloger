@@ -26,6 +26,7 @@
     <minimal.maven.version>3.3.9</minimal.maven.version>
     <spring.version>3.2.5</spring.version>
     <spring-cloud.version>2023.0.1</spring-cloud.version>
+    <spotless.version>2.43.0</spotless.version>
 
   </properties>
 
@@ -56,30 +57,121 @@
     <module>spring-authorization-server</module>
   </modules>
 
-<!--  <build>-->
-<!--    <plugins>-->
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-enforcer-plugin</artifactId>-->
-<!--        <version>${maven-enforcer-plugin.version}</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>enforce-maven</id>-->
-<!--            <goals>-->
-<!--              <goal>enforce</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <rules>-->
-<!--                <dependencyConvergence/>-->
-<!--                <requireMavenVersion>-->
-<!--                  <version>${minimal.maven.version}</version>-->
-<!--                </requireMavenVersion>-->
-<!--              </rules>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
-<!--    </plugins>-->
-<!--  </build>-->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven-enforcer-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <dependencyConvergence>
+                  <!--  fixing deps in spring cloud                -->
+                  <excludes>
+                    <exclude>com.google.guava:guava</exclude>
+                    <exclude>com.netflix.servo:servo-core</exclude>
+                    <exclude>com.fasterxml.woodstox:woodstox-core</exclude>
+                    <exclude>org.glassfish.hk2:hk2-api</exclude>
+                    <exclude>org.apache.httpcomponents:httpclient</exclude>
+                    <exclude>com.nimbusds:nimbus-jose-jwt</exclude>
+                  </excludes>
+                </dependencyConvergence>
+                <requireMavenVersion>
+                  <version>${minimal.maven.version}</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <formats>
+            <!-- you can define as many formats as you want, each is independent -->
+            <format>
+              <!-- define the files to apply to -->
+              <includes>
+                <include>.gitattributes</include>
+                <include>.gitignore</include>
+              </includes>
+              <!-- define the steps to apply to those files -->
+              <trimTrailingWhitespace/>
+              <endWithNewline/>
+              <indent>
+                <tabs>true</tabs>
+                <spacesPerTab>4</spacesPerTab>
+              </indent>
+            </format>
+          </formats>
+
+          <!-- define a language-specific format -->
+          <java>
+            <!-- no need to specify files, inferred automatically, but you can if you want -->
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+            </includes>
+            <!-- apply a specific flavor of google-java-format and reflow long strings -->
+            <googleJavaFormat>
+              <version>1.22.0</version>
+              <style>GOOGLE</style>
+              <reflowLongStrings>true</reflowLongStrings>
+              <formatJavadoc>true</formatJavadoc>
+              <reorderImports>false</reorderImports>
+            </googleJavaFormat>
+
+            <removeUnusedImports>
+              <engine>google-java-format</engine>    <!-- optional. Defaults to `google-java-format`. Can be switched to `cleanthat-javaparser-unnecessaryimport` (e.g. to process JDK17 source files with a JDK8+ Runtime) -->
+            </removeUnusedImports>
+
+            <formatAnnotations />  <!-- fixes formatting of type annotations, see below -->
+
+          </java>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <!--  <profiles>-->
+  <!--    <profile>-->
+  <!--      <id>backend</id>-->
+  <!--      <build>-->
+  <!--        <plugins>-->
+  <!--          <plugin>-->
+  <!--            <groupId>com.github.eirslett</groupId>-->
+  <!--            <artifactId>frontend-maven-plugin</artifactId>-->
+  <!--            <version>1.12.1</version>-->
+  <!--            <executions>-->
+  <!--              <execution>-->
+  <!--                <id>install node and npm-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--              <execution>-->
+  <!--                <id>npm install-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--              <execution>-->
+  <!--                <id>npm run build-->
+  <!--                </id> &lt;!&ndash; here there must be the same identifier as defined in <build><plugins> section &ndash;&gt;-->
+  <!--                <phase>none</phase> &lt;!&ndash; this disables plugin &ndash;&gt;-->
+  <!--              </execution>-->
+  <!--            </executions>-->
+  <!--          </plugin>-->
+  <!--        </plugins>-->
+  <!--      </build>-->
+  <!--    </profile>-->
+  <!--  </profiles>-->
 
 </project>

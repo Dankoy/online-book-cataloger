@@ -25,16 +25,6 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      <exclusions> <!-- конфликты внутри самой либы-->
-        <!--        <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
-        <!--          <groupId>com.netflix.servo</groupId>-->
-        <!--          <artifactId>servo-core</artifactId>-->
-        <!--        </exclusion>-->
-        <!--				<exclusion>-->
-        <!--					<groupId>com.google.guava</groupId>-->
-        <!--					<artifactId>guava</artifactId>-->
-        <!--				</exclusion>-->
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -72,12 +62,6 @@
       <groupId>com.github.cloudyrock.mongock</groupId>
       <artifactId>mongock-spring-v5</artifactId>
       <version>${mongock.version}</version>
-      <exclusions>
-        <exclusion>  <!-- declare the exclusion here -->
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -94,8 +78,6 @@
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
-
-
 
     <!--		test -->
     <dependency>
