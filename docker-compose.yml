@@ -1,6 +1,25 @@
 version: '3.7'
 
 services:
+
+  redis:
+    env_file:
+      - .env
+    image: 'redis:7.2.5'
+    restart: always
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    volumes:
+      - redis_volume:/root/redis
+    #      - /path/to/local/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - library-network
+
   library-backend:
     env_file:
       - .env
@@ -22,6 +41,7 @@ services:
       - MONGODB_PORT=27017
       - MONGODB_HOST=db
       - JASYPT_PASSWORD=${JASYPT_MASTER_PASSWORD}
+      - EUREKA_SERVER=http://spring-eureka-registry:8761/eureka
     restart: always
 
   library-frontend:
@@ -51,8 +71,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_CONTAINER_PASSWORD}
     ports:
       - "27017:27017"
+    volumes:
+      - mongodb_volume:/data/db
     networks:
       - library-network
+
+volumes:
+  redis_volume:
+    driver: local
+  mongodb_volume:
+    driver: local
 
 networks:
   library-network:
