@@ -1,4 +1,4 @@
-package ru.dankoy.springcloudgateway.security;
+package ru.dankoy.springcloudgateway.config.security;
 
 public enum Authority {
   ADMIN,
