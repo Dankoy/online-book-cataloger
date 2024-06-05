@@ -20,7 +20,7 @@ spring:
 
 jasypt:
   encryptor:
-    password: ${JASYPT_PASSWORD:masterpassword}
+    password: ${JASYPT_MASTER_PASSWORD:masterpassword}
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
 
