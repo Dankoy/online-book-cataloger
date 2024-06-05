@@ -18,7 +18,8 @@ public class DefaultSecurityConfig {
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
     http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(a -> a.anyRequest().authenticated())
+        .authorizeHttpRequests(
+            a -> a.requestMatchers("/api/v1/register").permitAll().anyRequest().authenticated())
         .formLogin(Customizer.withDefaults());
 
     return http.build();

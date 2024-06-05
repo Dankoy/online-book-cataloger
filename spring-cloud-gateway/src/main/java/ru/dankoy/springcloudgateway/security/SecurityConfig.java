@@ -29,7 +29,8 @@ public class SecurityConfig {
                 new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
 
     // Require authentication for all requests
-    http.authorizeExchange(auth -> auth.anyExchange().authenticated());
+    http.authorizeExchange(
+        auth -> auth.pathMatchers("/api/v1/register").permitAll().anyExchange().authenticated());
 
     // Allow showing /home within a frame
     http.headers(h -> h.frameOptions(f -> f.mode(Mode.SAMEORIGIN)));
