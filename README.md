@@ -36,7 +36,7 @@ gateway невозможно настроить авторизацию НЕ на
 серверах, который уже будет доставать роли из токена и по ним осуществлять авторизацию.
 
 В паттерне Spring Security Gateway, роль единой точки авторизации может взять на себя Spring Cloud
-Gateway.
+Gateway. Spring Cloud Gateway сохраняет сессии в редисе.
 
 ## Технологии
 
@@ -46,6 +46,8 @@ Gateway.
     1. Role based authorization
     2. OAuth + JWT token + Token Relay pattern
 4. Spring Cloud Gateway
+    1. Token Relay
+    2. Spring Session Redis
 5. Spring Authorization Server
 6. Mongo DB
 7. Mongock migrations
